@@ -32,7 +32,7 @@ function void removeWheels()
 # Let it cycle through the bones one by one.
 # After you notice a wheel (Or anything else you want to remove) dissapear
 # Take note what the last number printed.
-# On line 21, Add a new line like this;
+# On line 25, Add a new line like this;
 # holoBoneScale(1,INT,vec(0,0,0)) where INT is the bones number to remove
 
 #getWheels()
