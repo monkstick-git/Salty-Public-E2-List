@@ -1,7 +1,0 @@
-@name 
-@inputs 
-@outputs 
-@persist 
-@trigger 
-
-print("tet")

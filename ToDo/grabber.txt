@@ -1,9 +1,0 @@
-@name Grabber
-@inputs Z Z1
-@outputs ZD H
-@persist H
-@trigger 
-
-interval(10)
-ZD=(Z-50)/400
-H=H+ZD

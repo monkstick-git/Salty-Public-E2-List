@@ -1,8 +1,0 @@
-@name Test
-@inputs GPS:vector
-
-runOnTick(1)
-if(tickClk()){
-entity():isWeldedTo():setPos(owner():pos()+vec(0,0,100))
-
-}

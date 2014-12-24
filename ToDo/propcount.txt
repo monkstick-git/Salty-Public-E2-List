@@ -1,9 +1,0 @@
-@name PropCount
-@inputs 
-@outputs Out
-@persist 
-@trigger 
-interval(100)
-for(I=1,findByClass("prop_*")){
- Out = I  
-}

@@ -1,9 +1,0 @@
-@name Speedo1
-@inputs S
-@outputs S2 O
-@persist 
-@trigger 
-
-S2 = S / 70 + 0.3
-
-O = 1

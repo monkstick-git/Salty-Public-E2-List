@@ -1,8 +1,0 @@
-@name transaxle
-@inputs In:entity Out:entity Out2:entity
-@outputs 
-@persist 
-@trigger 
-interval(1)
-Out:applyAngForce(ang(In:angVel():pitch()*(Out:mass())/100,0,0))
-Out:applyAngForce(ang(In:angVel():pitch()*(Out2:mass()*5)*-1,0,0))

@@ -1,9 +1,0 @@
-@name Tables
-@inputs 
-@outputs 
-@persist 
-@trigger 
-
-Munstable = table()
-
-insertTable(Munstable,"Hello")
