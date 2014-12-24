@@ -1,0 +1,21 @@
+@name HYdraulic Legnth thing
+@inputs Left Right
+@outputs Legnth
+@persist Speed
+@trigger 
+
+runOnTick(1)
+if(first()|duped()){
+ Speed = 1   
+}
+if(tickClk()){
+
+if(Left){
+Legnth = Legnth + Speed 
+}else{} 
+
+if(Right & Legnth > 1){
+ Legnth = Legnth - Speed   
+}else{}
+   
+}

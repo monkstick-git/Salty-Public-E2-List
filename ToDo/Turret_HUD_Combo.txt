@@ -1,0 +1,227 @@
+@name Turret HUD Combo
+@inputs  Zoom Gear CoaxAmmo Ammo1 Ammo2 Ammo3 AmmoSwitch GunReady CoaxReady
+@inputs  [Gun TurretBase Chair]:entity [Active]:number [EGP Cam]:wirelink
+@outputs Z Speed AmmoActive1 AmmoActive2 AmmoActive3
+@persist AmmoSelect Ammo [Inertia Hold]:angle [Elevation Depression Yaw RotateSpeed]:number
+@persist CamL:entity R G B Forward Vertical Horizontal User:entity Rangefinder:ranger 
+@persist [Position]:vector [Angle]:angle [ScreenRes Res]:vector2 FOV
+
+# E2 must be facing forwards relative to the chassis at all times
+# Cam Controller required
+
+interval(50)
+
+if ( changed(Active) ) {
+      
+    #Cam Offsets
+    Forward=-10
+    Vertical=100
+    Horizontal=13
+    
+    #Field Of View Adjustment
+    FOV = 300
+    
+    #Cam relative position. This can be TurretBase, Gun or Chair
+    CamL=Gun
+    
+    #Turret Sound   
+    Gun:soundPlay(1,0,"vehicles/tank_turret_loop1.wav")
+    soundPitch(1,0)
+    
+    #Gun Limits
+    Elevation = 14
+    Depression = 3
+    Yaw = 360
+
+    #HUD Color Adjustment
+    R=25
+    G=100
+    B=225
+    
+    User= Chair:driver()
+    ScreenRes=egpScrSize(Chair:driver())
+    Res=ScreenRes/2
+    
+    #EGP Stuff
+    
+    EGP:egpLine(1,Res+vec2(160,0),Res+vec2(60,0))
+    EGP:egpSize(1,1)
+    EGP:egpColor(1,vec(R,G,B)) 
+    
+    EGP:egpLine(2,Res+vec2(-160,0),Res+vec2(-60,0))
+    EGP:egpSize(2,1)
+    EGP:egpColor(2,vec(R,G,B)) 
+    
+    #Ammo1 Text
+    EGP:egpText(4,"AP",Res+vec2(140,15))
+    EGP:egpSize(4,12)
+    EGP:egpFont(4, "Lucida Console")
+    EGP:egpAlign(4,1) #Aligning is optional
+    EGP:egpColor(4,vec(R,G,B)) 
+    
+    #Ammo2 Text
+    EGP:egpText(5,"HEAT",Res+vec2(140,35))
+    EGP:egpSize(5,12)
+    EGP:egpFont(5, "Lucida Console")
+    EGP:egpAlign(5,1) #Aligning is optional
+    EGP:egpColor(5,vec(R,G,B)) 
+    
+    #Ammo3 Text
+    EGP:egpText(6,"HE",Res+vec2(140,55))
+    EGP:egpSize(6,12)
+    EGP:egpFont(6, "Lucida Console")
+    EGP:egpAlign(6,1) #Aligning is optional
+    EGP:egpColor(6,vec(R,G,B)) 
+    
+    
+    #Chevron
+    EGP:egpPoly(7, Res, Res + vec2(24,17), Res + vec2(20,17), Res + vec2(0,4), Res + vec2(-20, 17), Res + vec2(-24, 17))
+    EGP:egpColor(7,vec(R,G,B))
+    
+    #Ammo1 Box
+    EGP:egpBoxOutline(9,Res+vec2(140,40),vec2(40,15))
+    EGP:egpSize(9,1)
+    EGP:egpColor(9,vec(R,G,B))  
+    
+    #Ammo2 Box
+    EGP:egpBoxOutline(8,Res+vec2(140,20),vec2(40,15))
+    EGP:egpSize(8,1)
+    EGP:egpColor(8,vec(R,G,B)) 
+ 
+    
+    #Ammo3 Box
+    EGP:egpBoxOutline(10,Res+vec2(140,60),vec2(40,15))
+    EGP:egpSize(10,1)
+    EGP:egpColor(10,vec(R,G,B)) 
+    
+    EGP:egpText(11,"",vec2(1100,520))
+    EGP:egpSize(11,15)
+    EGP:egpFont(11, "Lucida Console")
+    EGP:egpAlign(11,1) #Aligning is optional
+    EGP:egpColor(11,vec(R,G,B)) 
+    
+    EGP:egpBox(12,vec2(1100,600),vec2(40,15))
+    EGP:egpSize(12,1)
+    EGP:egpColor(12,vec(R,G,B)) 
+    
+    EGP:egpText(13,"",vec2(960,600))
+    EGP:egpSize(13,12)
+    EGP:egpFont(13, "Lucida Console")
+    EGP:egpAlign(13,1) #Aligning is optional
+    EGP:egpColor(13,vec(R,G,B)) 
+    
+    EGP:egp3DTracker(14,vec(0,0,0))
+    
+    EGP:egpCircle(15,vec2(0,0),vec2(4,4))
+    EGP:egpSize(15,1)
+    EGP:egpColor(15,vec(200,0,0))
+    EGP:egpParent(15,14)
+    
+    EGP:egpBoxOutline(16,Res+vec2(-140,20),vec2(40,15))
+    EGP:egpSize(16,1)
+    EGP:egpColor(16,vec(R,G,B)) 
+    
+    EGP:egpText(17,"COAX",Res+vec2(-140,15))
+    EGP:egpSize(17,12)
+    EGP:egpFont(17, "Lucida Console")
+    EGP:egpAlign(17,1) #Aligning is optional
+    EGP:egpColor(17,vec(R,G,B)) 
+    
+    EGP:egpText(18,"0",Res+vec2(-140,-20))
+    EGP:egpSize(18,15)
+    EGP:egpFont(18, "Lucida Console")
+    EGP:egpAlign(18,1) #Aligning is optional
+    EGP:egpColor(18,vec(R,G,B)) 
+    
+    EGP:egpBoxOutline(19,Res+vec2(-120,60),vec2(80,15))
+    EGP:egpSize(19,1)
+    EGP:egpColor(19,vec(R,G,B)) 
+    
+    EGP:egpText(20,"GEAR",Res+vec2(-160,55))
+    EGP:egpSize(20,12)
+    EGP:egpFont(20, "Lucida Console")
+    EGP:egpAlign(20,0) #Aligning is optional
+    EGP:egpColor(20,vec(R,G,B)) 
+    
+    EGP:egpBoxOutline(21,Res+vec2(-120,40),vec2(80,15))
+    EGP:egpSize(21,1)
+    EGP:egpColor(21,vec(R,G,B)) 
+    
+    EGP:egpText(22,"SPD ",Res+vec2(-160,35))
+    EGP:egpSize(22,12)
+    EGP:egpFont(22, "Lucida Console")
+    EGP:egpAlign(22,0) #Aligning is optional
+    EGP:egpColor(22,vec(R,G,B)) 
+    
+    #Marks below Chevron
+    EGP:egpCircle(3,Res+vec2(0,20),vec2(2,1))
+    EGP:egpSize(3,1)
+    EGP:egpColor(3,vec(R,G,B))
+    
+    EGP:egpCircle(23,Res+vec2(0,30),vec2(2,1))
+    EGP:egpSize(23,1)
+    EGP:egpColor(23,vec(R,G,B))
+    
+    EGP:egpCircle(24,Res+vec2(0,40),vec2(2,1))
+    EGP:egpSize(24,1)
+    EGP:egpColor(24,vec(R,G,B))
+    
+    
+    
+    AmmoSelect=1
+
+    RotateSpeed = clamp(50 - (Gun:mass()/1000),0,10) # You modify this , then you're a terrible person
+
+    rangerFilter(Gun)
+    rangerFilter(entity():getConstraints())
+    rangerPersist(1)
+    
+    Elevation*=-1
+    Inertia = shiftL(ang(Gun:inertia()))
+    Hold = entity():toLocal(Gun:angles())
+} 
+elseif( Active ) {
+        
+    #Camera Stuff
+    Cam["Position",vector] = CamL:toWorld(vec(Forward,Horizontal,Vertical)) - User:eye()*FOV
+    Cam["Angle",angle] = User:eyeAngles()
+    Z=Zoom*10
+    
+    #Gun Stuff
+    Angle = Chair:driver():eyeAngles()
+    Position = CamL:toWorld(vec(Forward,Horizontal,Vertical)) - User:eye()*FOV
+    GunAng = (rangerOffset(9999999999,Position,Angle:forward()):pos() - Gun:pos()):toAngle()
+    Rangefinder = rangerOffset(30000, User:shootPos() + User:eye() * 100, User:eye())
+    soundPitch(1,clamp(Gun:angVelVector():length()*10*(Gun:angVelVector():length()>10),0,80))
+    
+    #Ammo Selection
+    if(AmmoSwitch & ~AmmoSwitch){AmmoSelect+=1}
+    if(AmmoSelect>3){AmmoSelect=1}
+    if(AmmoSelect==1){AmmoActive1=1, EGP:egpBox(12,Res+vec2(113,20),vec2(15,15)), Ammo=Ammo1} else{AmmoActive1=0}
+    if(AmmoSelect==2){AmmoActive2=1, EGP:egpBox(12,Res+vec2(113,40),vec2(15,15)), Ammo=Ammo2} else{AmmoActive2=0}
+    if(AmmoSelect==3){AmmoActive3=1, EGP:egpBox(12,Res+vec2(113,60),vec2(15,15)), Ammo=Ammo3} else{AmmoActive3=0}
+
+
+    
+    #EGP Stuff
+    Speed = toUnit("mi/h",Chair:vel():length())
+    if(GunReady==1){EGP:egpColor(12,vec(R,G,B))}else{EGP:egpColor(12,vec(180,20,20))}
+    if(CoaxReady==1){EGP:egpColor(17,vec(R,G,B))}else{EGP:egpColor(17,vec(180,20,20))}
+    if(Ammo1>0){EGP:egpColor(4,vec(R,G,B))}else{EGP:egpColor(4,vec(180,20,20))}
+    if(Ammo2>0){EGP:egpColor(5,vec(R,G,B))}else{EGP:egpColor(5,vec(180,20,20))}
+    if(Ammo3>0){EGP:egpColor(6,vec(R,G,B))}else{EGP:egpColor(6,vec(180,20,20))}
+
+    EGP:egpText(11,""+Ammo,Res+vec2(140,-20))
+    EGP:egpText(18,""+CoaxAmmo,Res+vec2(-140,-20))
+    EGP:egpText(20,"GEAR  "+Gear,Res+vec2(-155,55))
+    EGP:egpText(22,"SPEED "+floor(Speed),Res+vec2(-155,35))
+    EGP:egpText(13,""+floor((Rangefinder:distance()*0.0254)),Res+vec2(0,50))
+    EGP:egpPos(14,rangerOffset(9999999999,Gun:pos()+Gun:forward()*100,Gun:forward()):position())
+    
+
+}
+else{ GunAng = entity():toWorld(Hold) }
+Ang1 = clamp((Gun:toLocal(entity():toWorld(clamp(entity():toLocal(Gun:toWorld(clamp(Gun:toLocal(GunAng),ang(-RotateSpeed),ang(RotateSpeed)))),ang(Elevation,-Yaw,-1),ang(Depression,Yaw,1)))) * 250 - Gun:angVel() * 30) * Inertia,-10000,10000)
+entity():setText(floor(Ang1):toString())
+Gun:applyAngForce((Gun:toLocal(entity():toWorld(clamp(entity():toLocal(Gun:toWorld(clamp(Gun:toLocal(GunAng),ang(-RotateSpeed),ang(RotateSpeed)))),ang(Elevation,-Yaw,-1),ang(Depression,Yaw,1)))) * 250 - Gun:angVel() * 30) * Inertia)
+

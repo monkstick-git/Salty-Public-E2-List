@@ -1,0 +1,127 @@
+@name PlaneAI V1
+@inputs Body:entity On
+@outputs Up Down Left Right Forward Speed Height BodyAngle:angle Fire HeightCheck
+@persist Speed Target:entity RollAngle:angle BodyAngle:angle TargetBearing TargetName:string HeightRanger:ranger HeightCheck IsPlayer
+@trigger 
+
+runOnTick(1)
+if(first() | duped()){
+RollAngle = ang(0,0,45)
+IsPlayer = 1
+}
+
+runOnChat(1)
+
+LastSaid=owner():lastSaid():explode(" ")
+if (chatClk(owner())&(LastSaid[1,string]:lower() == "+")) {
+    
+    Targetname = LastSaid[2,string]:lower()
+    Target = findPlayerByName(Targetname)
+    if(Target:id() == 0)
+    {
+     IsPlayer = 0  
+    }else{
+        IsPlayer = 1
+    }
+    hint("Targeting " + Target:name() + " debug: " + Target:id(), 3)
+    
+}
+
+if (chatClk(owner())&(LastSaid[1,string]:lower() == "-")) {
+    
+    Targetname = LastSaid[2,string]:lower()
+    Target = findPlayerByName(Targetname)
+    findIncludePlayerProps(Targetname)
+    findByClass("gmod_wire_pod")
+    Target = findClosest(Body:pos())
+
+    hint("Targeting " + Target:name() + "'s pod controllers!", 3)
+    IsPlayer = 1
+}
+
+    function checkAngles(Pitch,Yaw,Roll)
+    {
+        Pitch = -Pitch
+        Yaw = Yaw + 90
+        entity():setText(floor(Pitch):toString() + "\n" + floor(Yaw):toString() + "\n" + floor(Roll):toString() + "\n" + floor(TargetBearing):toString() + "\n" + floor(HeightCheck):toString())
+        
+        if((HeightCheck < 1500 & Pitch < 20) | Pitch < 5 & (Height < Target:pos():z()) & Pitch < 45){
+            Up = 2 * On * clamp(Speed / 5000,1,5)
+        }else{
+            Up = 0 * On
+        }
+        
+                
+        if(((Pitch > 10 | Height > -(Target:pos():z() - 200) & Pitch > -15) & Up == 0) | (IsPlayer == 0 & ((Body:angles():pitch() > -25) & Height < 100))){
+            Down = 3 * On
+        }else{
+            Down = 0 * On
+        }
+        
+        if(Height < Target:pos():z() < 1500 & Pitch < 45)
+        {
+         TargetBearing = TargetBearing / 2   
+        }
+        
+        if(Roll > (2 + (clamp(TargetBearing * 1,-80,80))))
+        {
+         Left = 1 * On * clamp(Speed / 5000,1,5)
+        }
+        else{
+         Left = 0   
+        }
+        if(Roll < -(2 - (clamp(TargetBearing * 1,-80,80))))
+        {
+         Right = 1 * On * clamp(Speed / 5000,1,5)
+        }else{
+        Right = 0
+        }
+        
+    } 
+    
+    function checkSpeed(Speed)
+    {
+     if(Speed < 2000){
+        Forward = 1 * On * IsPlayer
+    }else{
+        Forward = 0 * On * IsPlayer
+    }   
+
+    }
+
+    function checkTarget(Me:vector,You:vector,BodyAngle:angle)
+    {
+        RollAngle = (180 - (Me - You):toAngle())
+    }
+
+if(tickClk())
+{
+    Speed = Body:vel():length()
+  checkAngles(Body:angles():pitch(),Body:angles():yaw(),Body:angles():roll())
+  checkSpeed(Speed)
+  checkTarget(Body:pos(),Target:pos(),BodyAngle)
+Height = Body:pos():z()
+BodyAngle = Body:angles()
+TargetBearing = Body:bearing(Target:pos())
+Speed 
+
+#Height Ranger checks
+rangerHitWater(1)
+HeightRanger = rangerOffset(999999,Body:pos() - vec(0,0,200),-vec(0,0,100))
+HeightCheck = HeightRanger:distance()
+
+
+    if(Body:pos():distance(Target:pos()) <= 10000)
+        {
+            Fire = 1
+        }
+    else
+        {
+            Fire = 0
+        }
+        
+        if(IsPlayer == 0.1)
+        {
+
+        }
+}

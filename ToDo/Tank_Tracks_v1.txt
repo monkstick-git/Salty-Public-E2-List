@@ -1,0 +1,41 @@
+@name Tank Tracks v1
+@inputs 
+@outputs X Y Z N I
+@persist X Y Z N I N2 Amount Ang Radius
+@trigger 
+interval(10)
+if(first() | duped())
+{
+    # Amount of guns
+Amount = 10
+# Dont touch
+Ang = 360/Amount
+#How big you want the circle to be
+Radius = 32
+    for(I=1,Amount){
+        holoCreate(I)
+        holoModel(I,"models/hunter/plates/plate1x1.mdl")
+        holoColor(I,vec(255,255,random(255)))
+    }
+X=1
+Y=1
+Z=1
+
+
+
+}
+
+for(I=1,Amount){
+
+    
+E = holoEntity(I)
+Ent = entity()
+N=N+(entity():vel():length() / 250)
+X = sin(N)
+Z = sin(N+X)*100
+
+
+
+holoPos(I,Ent:pos() + vec((sin(Ang*I+(N + Z))*Radius),0,cos(Ang*I + Z)*Radius))
+holoAng(I, holoEntity(I):angles() + ang(0,0,0))
+}

@@ -1,0 +1,38 @@
+@name V8 Engine
+@inputs Reverse
+@outputs P1 P2 P3 P4 SCREEN
+@persist Rev
+@trigger 
+runOnTick(1)
+if(first() | duped())
+    {
+        
+        Sound = "/vehicles/airboat/fan_motor_fullthrottle_loop1.wav"
+         soundPlay(1,0,Sound) 
+    }
+    
+if(tickClk()){    
+ANG = entity():angles():pitch()
+Rev = Reverse * -2
+        soundPitch(1,entity():angVel():yaw()/20)
+if(ANG > 10 & ANG < 170){
+ P1 = 1 * Rev + 1
+P2 = 0
+}
+else{
+ P1 = 0
+P2 = 1 * Rev + 1  
+}
+
+if(ANG > 0 & ANG < 90){
+ P3 = 1 * Rev + 1
+P4 = 0
+}
+else{
+ P3 = 0
+P4 = 1 * Rev + 1  
+}
+
+
+SCREEN = entity():angles():pitch()
+}

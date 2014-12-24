@@ -1,0 +1,10 @@
+@name memleaktest
+@inputs EGP:wirelink Button
+@persist Props:array PNG:array ARRAY:array A
+interval(1)
+if(first() | duped()){
+
+}
+A=A+1
+EGP:egpText(1,countFunctions():toString(),vec2(10,10))
+

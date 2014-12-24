@@ -1,0 +1,13 @@
+@name WashingMachineFire    
+@inputs 
+@outputs 
+@persist 
+@trigger 
+if(first() | duped()){
+entity():soundPlay(0,0,"/ambient/outro/gunshipcrash.wav")   
+entity():isWeldedTo():setTrails(100,4,100,"trails/physbeam",vec(255,22,68),25)
+}
+
+interval(10)
+entity():isWeldedTo():applyForce(vec(10000,10,2))
+

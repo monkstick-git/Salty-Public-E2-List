@@ -1,0 +1,201 @@
+@name Muneris AutoGearing and Clutch V2
+@inputs
+@inputs Pod:entity W Rpm Reverse ClutchKey BrakeKey BackWheel1:entity BackWheel2:entity BackWheel3:entity BackWheel4:entity Speedo CalibrateButton TractionControllToggle YouCanIgnoreAnythingBelowMe IfYouAreNotUsingTheseFeatures ChangeUp ChangeDown MaxThrottleUp MaxThrottleDown 
+@outputs Throttle Gear Clutch Brake Div FinishedCalibrating TractionControlOut
+@persist ToggleTracCon TCUSensitivityOld CalMessage TCSActive Timer FinishedCalibrating TCUIndicateColor TCUSensitivity TCUAmount Div WheelVel C BreakAmount A B Clutch EngineMax EngineMin EngineRedLine Gears AutoReactionUp AutoReactionDown AutoClutch ClutchSensitivity AutoGearing ChangeUp IdleRpm IdleRpm2 ClutchOut Brake
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+ClutchOut = 1
+C=100
+Div = 150
+FinishedCalibrating = 0
+entity():setColor(vec(255,255,255))
+########################DO NOT CHANGE ABOVE SETTINGS
+AutoGearing = 1 #0 to disable the automatic gearbox, clutch will still depend on your settings.
+Gears = 8
+EngineMax = 9500 #Powerband Max 
+EngineMin = 7000 #Powerband Min
+EngineRedLine = 0 #Not used, yet.
+AutoReactionUp = 2 #Higher number = faster changes. Lower if its not changing correctly -#Default 2
+AutoReactionDown = 1 #Higher number means faster downchanges. Lower if its not changing correctly -#Default 2
+AutoClutch = 2 #2=Fully auto clutch 1=Semi Auto 0=Manual -#Default 2
+ClutchSensitivity = 2 #Higher number means clutch is more sensitive, but you may waste power. - Default 2
+IdleRpm = 6500 #If you want the engine to idle at a certain rpm, specify it here
+IdleRpm2 = IdleRpm
+BreakAmount = 2 #Default 2
+TCUIndicateColor = 1 #Shall we change the tyre color depending on TCU amount?
+TCUSensitivity = 9 #Traction controll sensitivity.  >> LOWER << is more sensitive, but you might loose some power. -# Default 15
+TCUAmount = 4 #Traction controll - How much will we reduce engine power and clutch when a wheelspin has been detected? (Multiplier, 4 is twice the amount of 2) -# Default 2
+TCUSensitivityOld = TCUSensitivity
+########################
+########################
+}
+if(tickClk()){
+if(AutoClutch == 2){
+        if(Speedo < 10){
+    if((W==1 | Reverse==1)){
+    if(Rpm > IdleRpm2 & (IdleRpm2 > IdleRpm)){IdleRpm2 = IdleRpm2 - 20}
+    Clutch = ((EngineMin / Rpm) -0.7)*ClutchSensitivity+(ClutchKey*10)
+    if(Rpm < IdleRpm2) {
+    if(IdleRpm2 < (EngineMax/1.1)){
+    IdleRpm2=IdleRpm2 + 35 ClutchOut = 10}
+    else{
+     if(IdleRpm2 > IdleRpm ){IdleRpm2 = IdleRpm2 - 65}   
+    }
+}}
+}
+}
+if(W==1){
+    if(Gear == Gears){Gear = 1}
+    Throttle = C -  TCSActive  
+    
+        if(Clutch > 0 & Clutch < 1.01){
+    Clutch = Clutch - (TCSActive  /100 +(ClutchKey*10))
+}
+if(ClutchKey == 0 & Clutch >= 1){
+ Clutch = Clutch - 1   
+}
+
+}
+if((W==0 & Reverse==0)){
+    if(floor(WheelVel) == floor(Speedo) & CalibrateButton){
+Timer = Timer + 1}
+           if(IdleRpm2 > IdleRpm){ IdleRpm2 = IdleRpm2 - 20}
+    if((Rpm < IdleRpm) & IdleRpm > 0){
+     Throttle = C
+     Clutch = 1   
+}else{Throttle = 0}
+    
+}
+if(Reverse==1){
+    if(ClutchKey == 0 & Clutch >= 0.9){
+ Clutch = Clutch - 1   
+}
+    Gear=Gears
+    Throttle = C - ((WheelVel - Speedo)*TCUAmount)   
+}
+if(AutoGearing){
+if(Rpm>EngineMax & ClutchKey == 0){ #& (IdleRpm2 <=EngineMin)){
+    A=A+AutoReactionUp
+}
+if((A>50 | (ChangeUp & ~ChangeUp)) & ClutchKey==0){
+    ClutchOut = 1
+        if(Gear < (Gears-1)){
+            Gear = Gear + 1
+        }
+    A = 0
+    B = 0
+}
+
+if(Rpm < EngineMin & W>=1){
+    B = B + AutoReactionDown
+}
+if(B > 40 | (ChangeDown & ~ChangeDown)){
+    if(Gear > 1){
+        ClutchOut = 1
+        Gear = Gear - 1   
+    }
+    A = 0
+    B = 0
+}
+if(Gear == Gears & Reverse ==0){
+    Gear = 1   
+}
+}else{
+
+if((~ChangeUp & ChangeUp)){
+ Gear = Gear + 1   
+}
+
+}
+
+
+
+if(AutoClutch == 1){
+    if(ClutchOut > 0 & (Clutch < 0.7) & ClutchKey==0){
+        ClutchOut = (ClutchOut - 0.003)
+        Clutch = ClutchOut
+    }
+else{if(ClutchKey){ClutchOut = 1}}
+}
+if(ClutchKey==1){
+ ClutchOut = 1   
+}
+
+if(MaxThrottleUp & C <100){C=C+1}else{}
+if(MaxThrottleDown & C > 0){C = C - 1}else{}
+
+if(BrakeKey & Brake <= 2){Brake = BreakAmount}else{if(Brake >0){Brake = 0}}
+
+
+WheelVel = (floor(abs(floor(BackWheel1:angVel():pitch())) + abs(floor(BackWheel2:angVel():pitch()))) + abs(floor(BackWheel3:angVel():pitch())) + abs(floor(BackWheel4:angVel():pitch()))) / Div
+entity():setText(WheelVel:toString())
+if((WheelVel-TCUSensitivity)>Speedo){
+    Throttle = 0
+    if(Clutch < 1){
+#Brake = Brake + 0.01
+Clutch=Clutch + 0.5
+
+
+
+}
+    else{
+
+if(W){
+    Throttle = C - ((WheelVel - Speedo)*TCUAmount)    
+Brake = 0
+#ClutchOut = 0
+}
+else{Throttle = 0
+}
+}
+}
+entity():setText(floor(WheelVel):toString() + " | " + floor(Speedo):toString())
+WheelVel = (floor(abs(floor(BackWheel1:angVel():pitch())) + abs(floor(BackWheel2:angVel():pitch()))) + abs(floor(BackWheel3:angVel():pitch())) + abs(floor(BackWheel4:angVel():pitch()))) / Div
+if(CalibrateButton ==1 & FinishedCalibrating == 0){
+if(Speedo > 5 & Rpm < (EngineMax)){
+if(WheelVel > Speedo){
+Div = Div + 1   
+}
+if(WheelVel < Speedo){
+Div = Div - 1
+}
+
+}else{}   
+}
+#
+#TCUIndicateColor
+    if(((WheelVel-(TCUSensitivity))>Speedo)){
+    TCSActive = ((WheelVel - Speedo)*TCUAmount)
+#    Clutch = (TCSActive  /100 +(ClutchKey*10))
+    BackWheel1:setColor(vec(Clutch*255 ,255-(Clutch*255),255-(Clutch*255)))  
+    BackWheel2:setColor(vec(Clutch*255,255-(Clutch*255),255-(Clutch*255)))  
+    }
+    else{ 
+        if(TCSActive > 0){TCSActive = TCSActive - 2}
+        
+    BackWheel1:setColor(vec(255,255,255))  
+    BackWheel2:setColor(vec(255,255,255))  }
+if(Timer > 120){FinishedCalibrating = 1}
+
+if(FinishedCalibrating == 1){
+if(CalMessage == 0){
+Pod:printDriver("Finished Calibrating")
+CalMessage = 1
+}
+ entity():setColor(vec(0,255,0))   
+}
+if(ToggleTracCon){
+ TractionControlOut = 0
+ TCUSensitivity = 10000     
+}
+else{
+TCUSensitivity = TCUSensitivityOld
+TractionControlOut = 1}
+
+}
+if((~TractionControllToggle & TractionControllToggle)){
+ToggleTracCon = !ToggleTracCon
+}
+

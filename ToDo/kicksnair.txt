@@ -1,0 +1,12 @@
+@name KickSnair
+@inputs 
+@outputs 
+@persist 
+@trigger 
+interval(1000)
+if(first() | duped()){
+ Bass = "/instruments/bass.wav" 
+Snare = "/instruments/snare.wav"  
+}
+soundPlay(0,1,Bass)
+soundStop(0)

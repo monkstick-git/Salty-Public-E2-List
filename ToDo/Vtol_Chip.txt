@@ -1,0 +1,130 @@
+@name Vtol Chip
+@inputs [FLP FRP BP]:entity Gyro:angle
+@outputs FL FR B Boost
+@persist [E Body O Target User]:entity TZ
+interval(66)
+ 
+if(first() | dupefinished())
+{
+    runOnLast(1)
+   
+    dsSetScope(1)
+    dsJoinGroup("skynet")
+   
+    Target = noentity()
+   
+    E = entity()
+    Body = E:isWeldedTo()
+    O = owner()
+   
+    holoCreate(1)
+    holoParent(1,Body)
+    holoAng(1,Body:toWorld(ang(0,-90,0)))
+   
+    E["type",string] = "vtol"
+    E["target",entity] = Target
+   
+    dsSend("join","skynet",E)
+}
+if(Target:isValid())
+{
+    holoAng(1,ang(0,(Target:pos() - holoEntity(1):pos()):toAngle():yaw(),0))  
+ 
+    TY = abs(holoEntity(1):angles():yaw()-360)-90
+    TZ = Target:pos():z()+150
+    Boost = (-500+Target:pos():setZ(0):distance(Body:pos():setZ(0)))/50
+}
+else
+{
+    TY = abs(holoEntity(1):angles():yaw()-360)-90
+    TZ = Body:pos():z()+17
+    Boost = 0
+}
+if(Gyro:yaw() < 180)
+{
+    if(TY < 180)
+    {
+        TY = TY+360
+    }
+   
+    CY = abs(TY-Gyro:yaw())
+}
+else
+{
+    if(TY >= 360)
+    {
+        TY = TY-360
+    }
+ 
+    CY = -abs(TY-Gyro:yaw())
+}
+if(TY+Gyro:yaw() > CY)
+{
+    Yaw = (TY+Gyro:yaw()-360)
+}
+else
+{
+    Yaw = -(TY-Gyro:yaw())
+}
+#Back Plate
+CZ = BP:pos():z()
+Mass = 118.8/3.6
+Ang = Body:toWorld(ang(clamp(Body:angVel():yaw()+Yaw,-60,60),0,0))
+Torque = BP:toLocal(rotationVector((quat(Ang)/quat(BP)))+BP:massCenter())
+B = -BP:vel():z()*Mass+(TZ-CZ)*Mass
+BP:applyTorque((Torque*500-BP:angVelVector()*20)*BP:inertia())
+ 
+#Front Left Plate
+CZ = FLP:pos():z()
+Mass = 118.8/3
+if(Target:isValid()){Ang = Body:toWorld(ang(0,0,clamp((-500+Target:pos():setZ(0):distance(Body:pos():setZ(0)))/25,-60,60)))}else{Ang = Body:toWorld(ang(0,0,0))}
+Torque = FLP:toLocal(rotationVector((quat(Ang)/quat(FLP)))+FLP:massCenter())
+FL = -FLP:vel():z()*Mass+(TZ-CZ)*Mass
+FLP:applyTorque((Torque*500-FLP:angVelVector()*20)*FLP:inertia())
+ 
+#Front Right Plate
+CZ = FRP:pos():z()
+Mass = 118.8/3
+if(Target:isValid()){Ang = Body:toWorld(ang(0,0,clamp((-500+Target:pos():setZ(0):distance(Body:pos():setZ(0)))/25,-60,60)))}else{Ang = Body:toWorld(ang(0,0,0))}
+Torque = FRP:toLocal(rotationVector((quat(Ang)/quat(FRP)))+FRP:massCenter())
+FR = -FRP:vel():z()*Mass+(TZ-CZ)*Mass
+FRP:applyTorque((Torque*500-FRP:angVelVector()*20)*FRP:inertia())
+ 
+#Sounds
+soundPlay(1,1,"ambient/tones/lab_loop1.wav")
+Body:soundPlay(2,1,"ambient/tones/lab_loop1.wav")
+BP:soundPlay(3,1,"ambient/tones/lab_loop1.wav")
+soundPitch(1,clamp(Body:vel():length()/4,30,255))
+soundPitch(2,clamp(Body:vel():length()/4,30,255))
+soundPitch(3,clamp(Body:vel():length()/4,30,255))
+ 
+if(dsClk())
+{
+    if(dsClk("check"))
+    {
+        dsSend("join","skynet",E)
+    }
+    elseif(dsClk("target"))
+    {
+        Target = dsGetEntity()
+       
+        E["target",entity] = Target
+       
+        dsSend("changedtarget","skynet",array(E,Target))
+    }
+    elseif(dsClk("targetcheck"))
+    {
+        if(Target == noentity())
+        {
+            dsSend("notarget","skynet",dsGetEntity())
+        }
+    }
+    elseif(dsClk("target"))
+    {
+        Target = dsGetEntity()
+    }
+}
+if(last())
+{
+    dsSend("leave","skynet",E)
+}

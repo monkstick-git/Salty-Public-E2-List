@@ -1,0 +1,21 @@
+@name awesome2
+@inputs 
+@outputs 
+@persist 
+@trigger 
+if(first() | duped())
+    {
+        runOnTick(1)
+
+        for (I=1,numPlayers())
+            {
+                T = findPlayerByName(players():entity(I):name())
+                holoCreate(I + 100,T:pos()+vec(0,0,200))
+                holoModel(I + 100,"hq_cone")
+                holoParent(I + 100,T)
+                holoScale(I + 100,vec(4,4,4))
+                holoColor(I + 100,vec(players():entity(I):ping(),255,0))
+                holoAng(I + 100,ang(0,0,180))
+            }  
+    }
+# holoPos(I + 100,T:pos() + vec(0,0,150) )

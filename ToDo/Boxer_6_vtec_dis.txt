@@ -1,0 +1,22 @@
+@name Boxer 6 vtec dis
+@inputs GPS:vector On Throttle
+@outputs RPM T1 T2 T3 T4
+@persist A B C T Bearing
+@trigger all
+@model models/sprops/cylinders/size_2/cylinder_3x42.mdl
+interval(1)
+
+if(Throttle){T=100}else{T=1}
+if(RPM>1800){C=29}
+if(T>0&T<2){C=20}
+
+RPM=abs(entity():angVel():yaw()/6)
+A=On*C*T
+B=-A
+C=150
+Bearing=entity():bearing(GPS)
+
+if(Bearing>-180&Bearing<0){T1=A}else{T1=B}
+T3=-T1
+if(Bearing>-90&Bearing<90){T2=A}else{T2=B}
+T4=-T2

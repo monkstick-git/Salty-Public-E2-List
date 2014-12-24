@@ -1,0 +1,80 @@
+@name E2 speedo and revs
+@inputs Rpm Speed E:wirelink Gear
+@outputs 
+@persist A Max Min X
+@trigger 
+
+runOnTick(1)
+if(tickClk()){
+ 
+if(first()|duped()){
+ E:egpClear()
+
+#E:egpCircle(1,vec2(30,30),vec2(50,50))   
+
+
+
+
+Max = 5800  
+Min = 3500
+    
+E:egpClear()
+E:egpCircle(1,vec2(256,256),vec2(250,250))  
+E:egpBox(2,vec2(0,-100),vec2(20,256))
+E:egpColor(2,vec(255,0,0)) 
+E:egpParent(2,1)
+
+E:egpCircle(100,vec2(256,256),vec2(210,210))
+E:egpColor(100,vec(50,0,230))
+E:egpCircle(3,vec2(256,256),vec2(200,200))
+E:egpColor(3,vec(0,0,0))  
+E:egpBox(4,vec2(0,-100),vec2(20,190))
+E:egpColor(4,vec(255,0,0)) 
+E:egpParent(4,3)
+E:egpText(5,floor(Speed):toString(),vec2(240,350))
+E:egpText(6,Gear:toString(),vec2(245,150))
+E:egpSize(5,40)
+E:egpSize(6,40)
+A= 1
+
+
+}
+if(A == 0){
+    
+Max = 5800  
+Min = 3500
+    
+E:egpClear()
+E:egpCircle(1,vec2(256,256),vec2(250,250))  
+E:egpBox(2,vec2(0,-100),vec2(20,256))
+E:egpColor(2,vec(255,0,0)) 
+E:egpParent(2,1)
+
+E:egpCircle(100,vec2(256,256),vec2(210,210))
+E:egpColor(100,vec(50,0,230))
+E:egpCircle(3,vec2(256,256),vec2(200,200))
+E:egpColor(3,vec(0,0,0))  
+E:egpBox(4,vec2(0,-100),vec2(20,190))
+E:egpColor(4,vec(255,0,0)) 
+E:egpParent(4,3)
+E:egpText(5,floor(Speed):toString(),vec2(240,350))
+E:egpText(6,Gear:toString(),vec2(245,150))
+E:egpSize(5,40)
+E:egpSize(6,40)
+A= 1
+}
+
+X = curtime()*40
+E:egpColor(100,vec((cos(X)+1)*100,0,230))
+E:egpAngle(1,(Rpm / 20)*-1 + 180)
+E:egpAngle(3,(Speed*3)*-1 + 135)
+E:egpText(5,floor(Speed):toString(),vec2(245,350))
+E:egpText(6,Gear:toString(),vec2(245,150))
+
+if(Rpm > (Max+200)){
+ E:egpColor(1,vec(255,0,0))   
+}
+else{
+ E:egpColor(1,vec(255,255,255))   
+}
+}

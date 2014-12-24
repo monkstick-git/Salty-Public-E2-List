@@ -1,0 +1,45 @@
+@name AngForceTurret
+@inputs 
+@outputs Fire
+@persist Pitch Yaw Roll Target:entity Ang:angle Plate:entity ArrayChat:array FireMode
+
+runOnTick(1)
+runOnChat(1)
+
+if(owner():keyAttack2()){Target=owner():aimEntity()}
+
+if(first()){FireMode=1}
+
+ArrayChat=owner():lastSaid():explode(" ")
+Plate=entity():isWeldedTo()
+
+if(FireMode==1){
+Pitch=Plate:elevation(Target:pos())
+Yaw=Plate:bearing(Target:pos())
+Roll=Plate:angles():roll()
+}
+elseif(FireMode==2){
+Pitch=Plate:elevation(owner():aimPos())
+Yaw=Plate:bearing(owner():aimPos())
+Roll=Plate:angles():roll()
+}
+
+if(chatClk(owner())&ArrayChat:string(1)=="!t")
+{
+    Target=findPlayerByName(ArrayChat:string(2))
+}
+Ang=(-ang(Pitch,Yaw,Roll)*Plate:mass())
+
+Plate:setAng(Ang+ $Ang * 5)
+
+if(FireMode==1){
+    if(Target){Fire=1}
+else{Fire=0}
+}
+if(chatClk(owner())&ArrayChat:string(1)=="!FireMode")
+{
+    if(ArrayChat:string(2):toNumber()<3&ArrayChat:string(2):toNumber()>0){
+    FireMode=ArrayChat:string(2):toNumber()
+}
+else{FireMode=FireMode}
+}    

@@ -1,0 +1,24 @@
+@name GyroTrain
+@inputs Speed Powa But STOP
+@outputs Force
+@persist 
+@trigger 
+
+runOnTick(1)
+if(tickClk()){
+
+if(But == 1){
+
+if(Speed < 12){
+Force = Force + 2000 
+}
+
+if(Speed > 12){
+ Force = Force - 2000 
+}
+}
+
+if(STOP == 1){
+ Force = 0   
+}
+}

@@ -1,0 +1,17 @@
+@name GetNoobs
+@inputs 
+@outputs Out:string
+@persist 
+@trigger 
+interval(10000)
+runOnHTTP(1)
+if(httpCanRequest())
+{
+httpRequest("http://saltyservers.co.uk/howmanynoobs.php")
+Out = httpData()
+}
+
+if(httpClk())
+{
+    
+}

@@ -1,0 +1,39 @@
+@name AttachHeli2
+@inputs Space Alt
+@persist A
+@outputs A Speed 
+interval(1)
+Speed= abs(entity():isWeldedTo():angVel():yaw()/360*60)
+
+E = entity():isWeldedTo()
+
+if(E:pos():z() < A){
+    C=ranger(1000000000)
+E:applyForce((C:position() - entity():pos()))
+
+
+
+#E:applyForce(vec(0,0,E:mass()*(A/10)))
+}
+if(E:pos():z() > A){
+#E:applyForce((vec(0,0,9.015)-E:vel())*E:mass())
+
+}
+
+
+
+if(Space==1){
+ A = A + 10
+}
+else{}
+if(Alt==1){
+ A = A - 10
+}
+else{}
+if(A < -13000){
+ A = -13000   
+}
+if(A>-11000){
+ A = -11000   
+}
+E:applyTorque(vec(0,0,A*50))

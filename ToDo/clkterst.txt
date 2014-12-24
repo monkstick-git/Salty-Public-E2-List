@@ -1,0 +1,11 @@
+@name clkterst
+@inputs But Time
+@outputs Sound SC
+@persist 
+@trigger 
+
+interval(1000)
+if (clk()){Sound =1 SC++}
+else{
+ Sound = 0   
+}

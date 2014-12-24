@@ -1,0 +1,17 @@
+@name WeightScale
+@inputs Ent:entity Base:entity
+@outputs Screen
+@persist 
+@trigger 
+interval(1)
+if(first()|duped()){
+E=Ent   
+B=Base
+}
+E=Ent   
+B=Base
+
+E:applyForce(vec(0,0,5)*E:mass())
+W=((E:pos():z() - B:pos():z())*-1+100) *500 * 73.63 -100
+Screen=W
+

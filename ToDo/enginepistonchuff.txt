@@ -1,0 +1,25 @@
+@name EnginePiston
+@inputs Reverse Go
+@outputs P1 P2 SCREEN
+@persist Rev
+@trigger 
+interval(100)
+if(first() | duped())
+    {
+
+    }
+    
+  
+ANG = entity():angles():pitch()
+
+if(Go==1){
+if(ANG > 0 & ANG < 90){
+ P1 = 1 * Rev + 1
+}
+else{
+ P1 = 0
+}
+
+}
+
+

@@ -1,0 +1,44 @@
+@name RangeChecker
+@inputs W R Pitch R2 Space Speed
+@outputs T L1 R1
+@persist 
+@trigger 
+runOnTick(1)
+if(tickClk()){
+    
+if(R == 0){
+ L1 = 1
+R1 = 1  
+}
+else{
+    
+    if(Pitch > 3){
+    L1 = Pitch
+}
+else{
+ L1 = 0   
+}
+if(Pitch < -3){
+    R1 = (Pitch*-1)
+}
+else{
+ R1 = 0   
+}
+    
+if(R2 < 500 & Space == 0 & Speed > 50){
+ T = 0 
+L1 = 1
+R1 = 1  
+}
+else{
+ if(W == 1){
+    
+     T = 1  
+}
+else{
+ T = 0   
+}
+}
+
+}
+}

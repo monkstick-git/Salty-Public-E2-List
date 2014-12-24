@@ -1,0 +1,14 @@
+@name Dance
+@inputs 
+@outputs 
+@persist T1
+@trigger 
+
+for(I=1,findByClass("npc_*")){
+
+find():npcAttack()
+findExcludeEntity(find())
+print(find())
+}
+
+

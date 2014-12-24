@@ -1,0 +1,27 @@
+@name Car bomb Speed
+@inputs 
+@outputs Speed Blow Screen Screen2
+@persist Arm Det
+@trigger 
+
+interval(500)
+
+Speed-toUnit("mph", entity():vel():length())
+
+if(Speed > 20){
+ Det = 1   
+}
+else{
+ if(Det == 1){
+ Det = 1   
+}   
+}
+
+if(Det == 1){
+ Arm = Arm + 0.5   
+}
+if(Arm >= 10){
+    Blow = 1
+}
+Screen = Arm
+Screen2 = Det

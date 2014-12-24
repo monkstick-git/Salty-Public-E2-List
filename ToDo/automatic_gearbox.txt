@@ -1,0 +1,33 @@
+@name Automatic Gearbox
+@inputs W S RPM
+@outputs Gear
+@outputs Crosslock Latch
+@persist High Low Stall Gears Bkf
+@persist AD Mousesteer
+@trigger 
+
+interval(100)
+
+if(dupefinished()) {reset()}
+
+if(first())
+    {
+        Gear = 1
+        High = 6800 #maximum RPM band
+        Low = 3500 #minimum RPM band
+        Gears = 5 #how many gears
+        Stall = 3700 #centrifugal clutch, aroudn the lower rev band
+        Bkf = 20 #Braking force
+        Mousesteer = 0 #Mouse steer or keypad steer
+        
+
+    }
+
+
+if(W ==1)
+    {
+            if(inrange(RPM,Low,High) ==0) {timer("Gearchange",350)}
+            if(clk("Gearchange") & (inrange(RPM,Low,High) ==0)) {
+                Gear = clamp((Gear+(RPM>High)-(RPM<Low)),1,Gears-1)
+                stoptimer("Gearchange")}
+}

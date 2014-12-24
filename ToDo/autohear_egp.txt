@@ -1,0 +1,18 @@
+@name AutoHear egp
+@inputs RPM E:wirelink
+@outputs Gear
+@persist Gear1
+@trigger 
+interval(1000)
+
+if(clk()){
+if(RPM > 6000 ){
+ Gear = Gear + 1   
+}
+#if(RPM < 3700 & Gear1 > 1){
+# Gear = Gear - 1   
+#}
+if(Gear1 < 1){
+ Gear = 1   
+}
+}

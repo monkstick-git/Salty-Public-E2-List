@@ -1,0 +1,21 @@
+@name ACF parent 
+@inputs E:entity S On
+@outputs Fire
+@persist 
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+
+}
+if(tickClk()){
+    if(On==1){
+E:setPos(entity():pos() + vec(0,0,-20))
+E:setAng((owner():aimPos() - (E:pos())):toAngle())
+if(S){
+ Fire=1   
+}
+else{Fire=0}
+}
+else{}
+}
+

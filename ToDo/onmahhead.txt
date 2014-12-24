@@ -1,0 +1,61 @@
+@name ONMAHHEAD
+@inputs 
+@outputs 
+@persist Prop:array AM
+@trigger 
+runOnTick(1)
+runOnChat(1)
+if(first() | duped()){
+ holoCreate(1)   
+holoScale(1,vec(1,1,1))
+holoEntity(1):setTrails(100,0,1,"trails/physbeam",vec(255,0,0),255)
+
+ holoCreate(2)
+holoScaleUnits(2,vec(700,700,700))
+holoColor(2,vec(50,50,255),50)  
+holoModel(2,"hq_sphere")
+
+}
+if(tickClk()){
+    while(perf()){
+    holoPos(1,owner():pos())
+    holoPos(2,owner():pos())
+findIncludePlayerProps(owner())
+findByClass("prop_*")
+Prop = findToArray()
+
+
+AM = 100
+
+
+
+
+AB = findClosest(entity():pos())
+holoPos(1,AB:pos())
+
+
+S = owner():lastSaid():explode(" ")
+if(S:string(1)=="/mahhead"){
+
+for(I=1,Prop:count()){
+ Props = Prop[I,entity]
+AM = AM + 100
+Props:setPos(owner():pos() + vec(0,0,AM))
+Props:applyAngForce(ang(100 * Props:mass(),0,0))   
+}
+
+}
+else{
+ for(I = 1,Prop:count()){
+Props = Prop[I,entity]
+if(Props:pos():distance(entity():pos()) < 3500){
+   AM = AM + 30
+#Props:setPos(owner():pos() + vec(0,0,AM))
+Props:setPos(Props:pos())
+Props:applyForce(vec(0,0,1000 * Props:mass()))
+#holoPos(1,Props:pos())
+}
+}   
+}
+}
+}

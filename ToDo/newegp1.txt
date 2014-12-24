@@ -1,0 +1,25 @@
+@name newegp1
+@inputs E:wirelink
+@outputs 
+@persist ARRAY:array
+@trigger 
+if(first() | duped())
+    {
+        runOnTick(1)
+        E:egpClear()
+
+    }
+    
+            for (I=1,numPlayers())
+            {
+                T = players():entity(I):ping()
+E:egpText(I,T:toString(),vec2(20,I*20))
+ARRAY = ARRAY:add(array(T))
+#ARRAY:insertNumber(toNumber(T))
+            }  
+
+E:egpText(100,ARRAY:average():toString(),vec2(200,200))
+
+if(ARRAY:count() > 100){
+ ARRAY = array()   
+}

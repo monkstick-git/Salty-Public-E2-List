@@ -1,0 +1,44 @@
+@name AUTOMATIC FUCKSAKE
+@inputs W RPM GEAR S Space
+@outputs UP DOWN Throttle GEAR1
+@persist A B
+@trigger 
+interval(1)
+if(W==1){
+ Throttle = 100   
+}
+
+if((W==0 & S==0)){
+ Throttle = 0   
+}
+
+if(S==1){
+    GEAR1=8
+ Throttle=100   
+}
+
+if(RPM>9500 & Space == 0){
+ A=A+0.8
+}
+if(A>50 & Space==0){
+    Throttle=0
+    if(GEAR1 < 7){
+GEAR1 = GEAR1 + 1}
+Throttle=0
+A = 0
+B=0
+}
+if(RPM < 7000 & W==1){
+ B = B + 0.8 
+}
+if(B > 40){
+    if(GEAR1 > 1){
+        Throttle=0
+ GEAR1 = GEAR1 - 1   
+}
+A = 0
+B = 0
+}
+    if(GEAR1 == 8 & S ==0){
+     GEAR1 = 1   
+    }

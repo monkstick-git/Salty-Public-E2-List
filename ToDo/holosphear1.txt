@@ -1,0 +1,27 @@
+@name HoloSphear1
+@inputs 
+@outputs X Y Z On Other Color:vector
+@persist Timer X1 Y1 Z1 ZE
+@trigger 
+interval(1)
+
+if(first() | duped()){
+ On = 1
+Other = 10   
+}
+
+Color = vec(100,ZE,ZE*2)
+
+Timer = Timer + 1000
+ZE = ZE + 0.5
+if(ZE > 100){
+ ZE = 0   
+}
+
+X1 = entity():pos():x()
+Y1 = entity():pos():y()
+Z1 = entity():pos():z()
+
+X = X1 + (cos(Timer)* (ZE / 6))
+Y = Y1 + (sin(Timer) * (ZE / 6))
+Z = Z1 + ZE

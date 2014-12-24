@@ -1,0 +1,28 @@
+@name camera
+@inputs Act L R
+@outputs FOV1
+@persist FOV
+@trigger 
+runOnTick(1)
+
+if(tickClk()){
+    if(Act == 1){
+E = entity():isWeldedTo()
+E:setAng(owner():eyeAngles())
+}
+if(L == 1){
+ FOV = FOV + 1   
+}
+
+if(R == 1){
+ FOV = FOV - 1   
+}
+
+if(FOV < 1){
+ FOV = 1   
+}
+if(FOV > 170){
+ FOV = 170   
+}
+FOV1=FOV
+}

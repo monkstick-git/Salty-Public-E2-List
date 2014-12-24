@@ -1,0 +1,26 @@
+@name EGPmessabout
+@inputs EGP:wirelink
+@outputs 
+@persist A Time B
+@trigger 
+interval(10)
+if(first()){
+    EGP:egpClear()
+    for(I=1,100){
+EGP:egpBox(I,vec2(10,10),vec2(10,10))
+}
+A=360/100
+
+for(I=1,100){
+EGP:egpPos(I,vec2(256,256) + vec2(sin(A*I)*256,cos(A*I)*256))
+}
+}
+B=B+1
+Time= abs(sin(B/10)*100)
+
+EGP:egpColor(Time,vec(255-B*2,B*2,255-B))
+entity():setText(Time:toString())
+
+EGP:egpPos(floor(Time),vec2(256,256) + vec2(cos(A*Time)*256,sin(A*Time)*256))
+EGP:egpPos(floor(Time-1),vec2(256,256) + vec2(cos(A*Time)*256,sin(A*Time)*256))
+

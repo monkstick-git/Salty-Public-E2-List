@@ -1,0 +1,15 @@
+@name MunSteering
+@inputs E:entity A D Ent2:entity
+@outputs 
+@persist Ang
+@trigger 
+
+interval(10)
+Ent = entity():isWeldedTo()
+if(A & Ang < 30){Ang = Ang + 3}
+if(D & Ang > -30){Ang = Ang - 3}
+
+if(A==0 & D==0 ){ if(Ang>0) {Ang=Ang-3} if(Ang<0){Ang=Ang+3}}
+Ent2:setAng(E:angles())
+Ent:setAng(E:angles() + ang(0,Ang,0))
+

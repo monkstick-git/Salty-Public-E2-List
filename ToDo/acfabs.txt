@@ -1,0 +1,46 @@
+@name ACFABS
+@inputs W Wheel:entity Wheel2:entity F1:entity F2:entity Speedo S
+@outputs RPM1 RPM2 RPM3 RPM4 Ind Throttle C
+@persist Pos:vector Throttle
+@trigger 
+interval(1)
+if(first()|duped()){
+
+}
+Pos = entity():pos()
+ E = Wheel 
+F = Wheel2
+Speed = 1#$Pos:x() + $Pos:y() + $Pos:z()
+RPM1 = abs(F1:angVel():pitch()/360*60) + 60 + Speed * 4
+RPM2 = abs(F2:angVel():pitch()/360*60) + 60 + Speed * 4
+RPM3 = abs(Wheel:angVel():pitch()/360*60)
+RPM4 = abs(Wheel2:angVel():pitch()/360*60)
+
+if(W == 1){
+    if(Throttle>=100){
+ Throttle=100   
+}
+if(Throttle<=0){
+ Throttle=0   
+}
+
+    
+    
+    if((RPM1 > RPM3)|(RPM2 > RPM4)){
+Throttle=Throttle + 2
+C=0
+}
+else{
+Throttle=Throttle-3
+C=0.5
+}
+
+}
+if(W == 0){
+ Throttle=Throttle-15
+
+if(Throttle<=0){
+ Throttle=0   
+}
+
+}

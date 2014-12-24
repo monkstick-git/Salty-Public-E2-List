@@ -1,0 +1,68 @@
+@name COLORSORTER
+@inputs Range:vector Rangedist Dist Ent:entity
+@outputs Hyd Grab
+@persist E:entity Tog
+@trigger 
+interval(10)
+RED = 142 
+GREEN = 214
+BLUE = 285
+
+
+# RED 
+if(Range == vec(255,0,0) & Dist < 180 & Tog == 0){
+Grab = 0
+Ent:setPos(entity():pos() - vec(0,0,50))
+Ent:setAng(entity():angles())
+Grab = 1
+ Hyd = Hyd + 1
+if(Dist > 160 & Dist < 170){
+ Grab = 0
+ Tog = 1
+Hyd = Hyd - 60
+}
+}
+
+#GREEN
+if(Range == vec(0,255,0) & Dist < 240 & Tog == 0){
+Grab = 0
+Ent:setPos(entity():pos() - vec(0,0,50))
+Ent:setAng(entity():angles())
+Grab = 1
+ Hyd = Hyd + 1
+if(Dist > 230 & Dist < 240){
+ Grab = 0
+ Tog = 1
+Hyd = Hyd - 60
+}
+}
+#BLUE
+if(Range == vec(0,0,255) & Dist < 300 & Tog == 0){
+Grab = 0
+Ent:setPos(entity():pos() - vec(0,0,50))
+Ent:setAng(entity():angles())
+Grab = 1
+ Hyd = Hyd + 1
+if(Dist > 290 & Dist < 300){
+ Grab = 0
+ Tog = 1
+Hyd = Hyd - 60
+}
+}
+
+
+
+
+
+
+
+
+
+
+if(Range == vec(255,255,255) & Dist > 25 & Tog == 1){
+ Hyd = Hyd - 10
+Grab = 0   
+}
+if(Dist < 50 & Tog == 1){
+ Tog = 0
+}

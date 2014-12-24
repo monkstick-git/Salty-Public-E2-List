@@ -1,0 +1,46 @@
+@name E2Digi
+@inputs DS:wirelink
+@outputs A B BPS G
+@persist A B C D A1 B1 C1 RAND G F1 F2
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+DS[1048574] = 0
+DS[1048569] = 2
+DS[1048572] = 256
+DS[1048573] = 256
+A=0
+B=0
+C=0
+D=0
+RAND=100
+G=1.1
+ F1=1
+F2=1
+}
+if(tickClk()){
+while(perf()&D<2){
+#BPS=curtime()/(ops()/100)
+#D=D+1
+A=A+2
+if(A>=256){B=B+1 A=C} 
+if(B>=256) {B=0 A=1 C=1 D=D+1}
+F1=F1+1
+if(F1>=256){F2=F2+1 F1=C} 
+if(F2>=256) {F2=0 F1=1}
+
+G=abs(cos((B*A)*RAND))*6
+#G=abs(sin((F1*F2)*RAND)*RAND)
+
+#DS[(A)+(B)*256]=rgb2digi(vec(G/5,G/5,G/5),3) 
+
+DS[F1+F2/A*256]=rgb2digi(vec(G,G,G),3) 
+if(D>=2){
+ C=0
+A=0
+ 
+}
+
+}
+}
+

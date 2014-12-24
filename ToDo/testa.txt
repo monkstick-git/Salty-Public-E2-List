@@ -1,0 +1,22 @@
+@name 
+@inputs GPS UP DOWN RESET
+@outputs Z
+@persist 
+@trigger 
+
+if(RESET == 1){
+ Z = GPS   
+}
+
+if(UP == 1){
+ Z = Z + 10
+}
+else{
+ Z = Z   
+}
+if(DOWN == 1){
+ Z = Z - 10  
+}
+else{
+ Z = Z   
+}

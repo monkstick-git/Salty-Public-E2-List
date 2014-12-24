@@ -1,0 +1,37 @@
+@name AutoAimer2
+@inputs E1:entity Range:entity
+@outputs Fire
+@persist C
+@trigger 
+
+interval(10)
+if(first()|duped()){
+ holoCreate(1)   
+}
+findByClass("npc_*")
+
+findByModel("models/props_junk/wood_crate001a.mdl")
+findClosest(entity():pos())
+A = find()
+if(A){
+    if(A:pos():distance(entity():pos()) < 500000000){
+E1:setAng((((A:pos()+vec(0,0,0))-E1:pos()):toAngle()-ang(0,0,0)))
+A:setColor(vec(255,0,0),255)
+
+if(Range == find()){
+ Fire=1   
+if(C<1){
+#propSpawn("models/props_junk/wood_crate001a.mdl",owner():pos() + vec(0,0,100),ang(0,0,0),0)   
+}
+C=C+1
+}
+else{
+ Fire = 0
+C=0
+}
+}
+else{Fire=0}
+}
+else{Fire=0}
+
+holoPos(1,A:pos()+ A:angVelVector())

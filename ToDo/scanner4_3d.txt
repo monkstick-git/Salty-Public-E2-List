@@ -1,0 +1,25 @@
+@name Scanner4 3d
+@inputs EGP:wirelink Dist Legnth Clear Height
+@outputs Legn HoloPos Legn2
+@persist Time
+@trigger 
+runOnTick(1)
+if(tickClk()){
+EGP:egpBox(Legn,vec2(512-(Legn*5),Height*5),vec2(10,10))
+EGP:egpColor(Legn,vec(Dist*2,0,255-(Dist*2)))
+Time = Time + 0.4
+
+if(Time > 100){
+ Time = 0   
+}
+Legn = floor(Time)
+
+
+
+if(Clear == 1){
+    
+ EGP:egpClear()   
+    
+}
+Legn2 = 100 - Legn
+}

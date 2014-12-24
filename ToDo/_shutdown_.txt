@@ -1,0 +1,95 @@
+@name [Salty] - Throwing Spears
+@inputs A
+@outputs 
+@persist Ready Bul [Array,Fade,Alpha]:array Spread SpreadAng:angle
+@trigger 
+
+runOnTick(1)
+interval(500)
+if(first() | duped())
+{
+    Array = array()  
+    Fade = array() 
+    Alpha = array()
+    Ready = 1 
+    Spread = 3
+}
+
+if(owner():keyAttack1() & Ready == 1)
+{
+    for(I=1,1){
+
+    SpreadAng = ang(random(-Spread,Spread),random(-Spread,Spread),random(-Spread,Spread))
+    Bul = Bul + 1
+    holoCreate(Bul,owner():pos() + vec(0,0,60)) 
+    holoEntity(Bul):setTrails(5,1,1,"trails/smoke",vec(255,255,255),255)
+    holoModel(Bul,"models/props_junk/harpoon002a.mdl")
+    holoAng(Bul,owner():eyeAngles() + SpreadAng)
+    Array[Array:count() + 1,entity] = holoEntity(Bul) 
+    holoScale(Bul,vec(random(0.8,1.3),random(0.8,1.3),random(0.8,1.3)))
+
+}
+    timer("Ready",5)
+
+    Ready = 0
+}
+
+if(clk("Ready"))
+{
+ Ready = 1   
+}
+
+if(tickClk())
+{
+    for(I=1,Array:count())
+    {
+    Holo = Array[I,entity]
+    Index = holoIndex(Holo)
+    Ent = holoEntity(Index)
+    holoPos(Index,Ent:pos() + (Ent:forward() * 100))
+    holoAng(Index,Ent:angles() + ang(1,0,0))
+    Ranger = rangerOffset(100,Ent:pos(),Ent:forward()) 
+    
+    if(Ranger:hit())
+    {
+        if(Ranger:entity())
+        {
+            holoPos(Index,Ranger:position())
+            holoParent(Index,Ranger:entity())
+            
+        }else{
+            
+        }
+      #  
+     #   Ent:removeTrails()
+        holoColor(Index,vec(255,0,0))
+        holoPos(Index,Ranger:position())
+        Array:remove(I)
+        Fade[Fade:count() + 1,entity] = Ent
+        Alpha[Alpha:count() + 1,normal] = 255
+    }
+    
+    }
+ 
+}
+
+if(clk())
+    {   
+        for(I=1,Fade:count())
+        {
+         Holo = Fade[I,entity]
+         Index = holoIndex(Holo)
+         A = Alpha[I,normal]
+        
+        if(A>=1){
+          #  holoAlpha(Index,clamp(A,0,255))
+            Alpha[I,normal] = A - 10
+        }else
+        {
+     #       print(A)
+            holoDelete(Index) 
+            Fade:remove(I)
+            Alpha:remove(I)
+        }
+        }
+    }

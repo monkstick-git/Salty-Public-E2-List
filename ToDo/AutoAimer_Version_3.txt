@@ -1,0 +1,44 @@
+@name AutoAimer Version 3
+@inputs On Shoot Ent:entity Ent2:entity Up Down
+@outputs Delta:vector
+@persist Delta:vector DeltaOld:vector OldFind:vector AngDeltaOld:angle MulAmount
+@trigger 
+if(first()|duped()){
+    MulAmount = 6
+runOnTick(1)
+holoCreate(1)
+holoModel(1,"hq_sphere")
+holoScale(1,vec(0.4,0.4,0.4))
+
+runOnTick(2)
+holoCreate(2)
+holoModel(2,"hq_sphere")
+holoScale(2,vec(5,5,5))
+}
+if(tickClk()){
+if(Up & MulAmount < 10){MulAmount = MulAmount + 0.1}
+if(Down & MulAmount > 0){MulAmount = MulAmount - 0.1}
+rangerFilter(Ent)
+Ranger = rangerOffset(10000,Ent:pos(), Ent:forward())
+holoPos(1, Ranger:pos())
+holoAng(1, Ent:angles())
+
+rangerFilter(Ent2)
+Ranger2 = rangerOffset(10000,Ent2:pos(), Ent2:forward())
+holoPos(2, Ranger2:pos())
+holoAng(2, Ent2:angles())
+
+findByClass("player")
+findIncludePlayer("xiii")
+#findIncludePlayerProps("Wiggdy")
+#findByModel("models/props_phx/construct/wood/wood_wire1x1x2.mdl")
+Find = findClosest(Ent:pos()):vehicle()
+MulAmount = clamp((Find:pos() + Ent:pos()):length() / 1000 - 15,1,10)
+Mul = (Find:vel():length()/MulAmount)
+holoPos(2,Find:pos() + (Find:forward() * Mul))
+Ent:setAng(  ((Find:pos() + (Find:forward() * Mul)-Ent:pos())):toAngle()  )
+Ent2:setAng(  ((Find:pos() + (Find:forward() * Mul)-Ent2:pos())):toAngle()  )
+entity():setText(clamp(((Find:pos() + Ent:pos()):length() / 1000 - 15),1,10):toString())
+}
+
+

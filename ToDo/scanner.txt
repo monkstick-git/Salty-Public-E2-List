@@ -1,0 +1,17 @@
+@name Scanner
+@inputs E:entity Ranger
+@outputs X Y G
+@persist A B
+@trigger 
+
+runOnTick(1)
+if(tickClk()){
+A=A+0.2
+if(A>=25){A=0 B=B+0.2}
+if(B>=45){A=0 B=0}
+E:setAng(ang(A+70,0,B))
+
+G = Ranger  *50* -1
+X = A * 10
+Y = B * 10
+}

@@ -1,0 +1,17 @@
+@name Acf Wheelspin
+@inputs A:entity B:entity C:entity D:entity Break1
+@outputs Break RPM Light
+@persist 
+@trigger 
+interval(1)
+Back = (abs(C:angVel():pitch()/360*60) + abs(D:angVel():pitch()/360*60)) / 2
+Front = (abs(A:angVel():pitch()/360*60) + abs(B:angVel():pitch()/360*60)) / 2
+
+if(Front>(Back+20) | Back > (Front+20)){
+  Break=Break1+0.2
+Light=1
+}
+else{Break=Break1+0
+Light=0}
+
+RPM = Back

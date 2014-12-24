@@ -1,0 +1,37 @@
+@name EGPRadar
+@inputs EGP:wirelink
+interval(1000)
+
+if(first()){
+ EGP:egpClear()   
+EGP:egpCircle(200,vec2(256,256),vec2(256,256))
+EGP:egpColor(200,vec(0,100,0))
+EGP:egpAlpha(200,255)
+}
+
+for(I=1,numPlayers()){
+    X = findPlayerByName(players():entity(I):name()):pos():x() + 15360
+    Y = findPlayerByName(players():entity(I):name()):pos():y() + 15360
+    XY = vec2(X/60,Y/60)
+    
+    
+ EGP:egpCircle(I,XY,vec2(1,1))
+EGP:egpColor(I,vec(I * 25,100,255 - (I * 25)))
+EGP:egpSize(I,vec2(4,4))
+#EGP:egpText(I,players():entity(I):name(),XY)
+ EGP:egpLine(I + 50,vec2(30,I * 45 - (I * 10) + 24 ),XY)   
+if(owner():lastSaid() == "Clear"){
+EGP:egpClear()
+}
+else{
+    
+}
+}
+
+for(I=1,numPlayers()){
+ EGP:egpText(I + 13,players():entity(I):name(),vec2(10,I * 45 - (I * 10) + 10 ))
+
+}
+
+
+

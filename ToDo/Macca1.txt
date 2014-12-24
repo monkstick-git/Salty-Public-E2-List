@@ -1,0 +1,26 @@
+@name Macca1
+@inputs E:entity E2:entity Speed W
+@outputs A B C Throttle Break
+@persist 
+@trigger 
+interval(1)
+A = (abs(floor(E:angVel():pitch())) + abs(floor(E2:angVel():pitch())))/2
+B = Speed
+C = floor(A/70)
+
+if((C-15)>Speed){
+Throttle = 0
+if(Break < 1){
+Break = Break + 0.5
+}
+}
+else{
+if(W){
+Throttle = 100
+Break = 0
+}
+else{Throttle = 0
+}
+}
+
+entity():setText(C:toString())

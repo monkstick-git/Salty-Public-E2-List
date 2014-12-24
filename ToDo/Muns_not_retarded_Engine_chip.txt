@@ -1,0 +1,8 @@
+@name Muns not retarded Engine chip
+@inputs
+@outputs 
+@persist 
+@trigger all
+@model models/props_phx/smallwheel.mdl
+interval(1)
+

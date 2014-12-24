@@ -1,0 +1,24 @@
+@name LineGraph2
+@inputs E:wirelink IN
+@outputs 
+@persist A RPM RPM2 B C VEC2:vector2
+@trigger 
+
+#[interval(100)
+A=A+1
+RPM=IN/26.3671875
+E:egpLine(A,vec2(0,RPM),vec2(5,RPM2))
+RPM2=RPM
+if(A>=512){A=0}
+for(I=1,100){
+E:egpPos(I,E:egpPos(I) + vec2(5,0))
+if(E:egpPos(I):x() > 512){E:egpRemove(I)}
+}]#
+interval(100)
+A=A+1
+if(A>=100){A=0}
+C=abs(sin(curtime()*100)*512)
+E:egpLine(A,VEC2,vec2(240,C))
+B=C
+VEC2=vec2(240,B)
+#E:egpPos(A,E:egpPos(A)-vec2(A,0))

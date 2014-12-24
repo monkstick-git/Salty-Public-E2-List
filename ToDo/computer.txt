@@ -1,0 +1,33 @@
+@name Computer
+@inputs EGP:wirelink TabX TabY Click
+@outputs 
+@persist A Pos2:vector2 Pos:vector2
+@trigger 
+interval(500)
+
+
+    A = A + 1
+    if(A > 200){
+     A= 0   
+    }
+Pos2 = Pos
+Pos = vec2(TabY,TabX) * 512 
+
+EGP:egpLine(A,Pos,Pos2)
+EGP:egpCircle(A + 106,Pos,vec2(5,5))
+if(Click ==1){
+EGP:egpColor(1,vec(255,0,255)) 
+}
+else{
+EGP:egpColor(1,vec(255,255,255))  
+}
+
+ EGP:egpText(100,hostname(),vec2(10,10))  
+ EGP:egpText(101,time("hour"):toString() + " :",vec2(10,450)) 
+ EGP:egpText(102,time("min"):toString()+ " :",vec2(40,450)) 
+ EGP:egpText(103,time("sec"):toString(),vec2(70,450)) 
+EGP:egpText(104,map(),vec2(400,450))
+EGP:egpText(105,ops():toString(),vec2(200,450))
+EGP:egpText(106,"Ops: ",vec2(160,450))
+
+

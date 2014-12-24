@@ -1,0 +1,12 @@
+@name AtiveSuspension
+@inputs E:entity
+@outputs L1 L2 R1 R2 Left Right
+@persist Body Pitch Left Right
+@trigger 
+
+interval(10)
+E:setText(E:angles():pitch():toString())
+Pitch = E:angles():pitch()
+if(Pitch > 0){Right = (abs(Pitch)*5000) + 35000 Left = 35000}
+if(Pitch < 0){Left = (abs(Pitch)*5000) + 35000 Right = 35000}
+

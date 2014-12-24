@@ -1,0 +1,15 @@
+@name Holocircle
+@inputs 
+@outputs X1 Y1 X Y Z Pos:vector
+@persist Timer
+@trigger 
+interval(20)
+Timer += 0.02
+X1 = X + (sinr(Timer*2)*5)
+Y1 = Y + (cosr(Timer*2)*5)
+
+
+Pos=entity():pos()
+X=Pos:x()
+Y=Pos:y()
+Z=Pos:z() + 50 + (sinr(Timer*10))

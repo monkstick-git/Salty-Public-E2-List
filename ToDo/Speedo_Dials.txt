@@ -1,0 +1,129 @@
+@name Speedo Dials
+@inputs EGP:wirelink RPM Speed Gear Chair:entity
+@outputs 
+@persist MPH Centre1:vector2 Centre2:vector2 RPMo MaxRPM
+@trigger 
+
+runOnTick(1)
+
+if(first() | dupefinished()){
+
+MaxRPM=5000 #   WARNING- Do not put this above 10000    #
+
+runOnTick(1)
+
+EGP:egpClear()
+
+EGP:egpCircle(71, vec2(356,76), vec2(65,65))
+EGP:egpColor(71, vec(50,50,50))
+
+for(I=1,12) {Angle=(360/12)*I
+
+EGP:egpText(72+I, I:toString(), vec2(351,65)+vec2(55,0):rotate(Angle-90))
+}
+
+EGP:egpCircle(85, vec2(356,76), vec2(5,5))
+EGP:egpColor(85, vec(255,0,0))
+
+Centre1=vec2(376,256)
+
+Centre2=vec2(136,256)
+
+EGP:egpCircleOutline(1, vec2(376,256), vec2(100,100))
+EGP:egpColor(1, vec(100,100,100))
+
+EGP:egpCircleOutline(2, vec2(136,256), vec2(100,100))
+EGP:egpColor(2, vec(100,100,100))
+
+for(I=0,ceil(MaxRPM/1000),1) {Angle=-I/ceil(MaxRPM/1000)*270-90
+
+EGP:egpLine(I+3, vec2(136,256)+vec2(100,0):rotate(Angle), vec2(136,256)+vec2(90,0):rotate(Angle))
+
+EGP:egpText(I+14, toString(ceil(MaxRPM/1000)-I), vec2(131,246)+vec2(110,0):rotate(Angle))}
+
+
+for(I=0,10,1) {Angle=-I/10*270-180
+
+EGP:egpLine(I+25, vec2(376,256)+vec2(100,0):rotate(Angle), vec2(376,256)+vec2(90,0):rotate(Angle))
+
+EGP:egpText(I+36, toString(I*10), vec2(371,246)+vec2(110,0):rotate(Angle))}
+
+EGP:egpText(57, "", vec2(246,356))
+EGP:egpFont(57, "lucida console", 40)
+
+EGP:egpText(58, "X1000", vec2(136,176))
+EGP:egpFont(58, "lucida console", 20)
+
+EGP:egpText(59, "", vec2(306,176))
+EGP:egpFont(59, "lucida console", 20)
+
+EGP:egpText(60, "", vec2(106,56))
+EGP:egpFont(60, "lucida console", 20)
+
+EGP:egpText(62, "", vec2(6,406))
+EGP:egpFont(62, "lucida console", 20)
+
+EGP:egpText(63, "", vec2(276,406))
+EGP:egpFont(63, "lucida console", 20)
+
+EGP:egpText(64, "", vec2(406,406))
+EGP:egpFont(64, "lucida console", 20)
+
+EGP:egpBoxOutline(65, Centre2+vec2(-20,0), vec2(40,20))
+
+EGP:egpBoxOutline(66, Centre1+vec2(20,0), vec2(40,20))
+}
+
+while(perf(1)){
+EGP:egpLine(86, vec2(356,76)+vec2(0,10):rotate(360/12*time("hour")+360/12/60*time("min")), vec2(356,76)+vec2(0,-35):rotate(360/12*time("hour")+360/12/60*time("min")))
+
+EGP:egpLine(87, vec2(356,76), vec2(356,76)+vec2(0,-55):rotate(360/60*time("min")+360/60/60*time("sec")))
+EGP:egpColor(87, vec(100,100,255))
+
+EGP:egpLine(88, vec2(356,76), vec2(356,76)+vec2(0,-55):rotate(360/60*time("sec")))
+EGP:egpColor(88, vec(255,100,100))
+
+EGP:egpAngle(65, Centre2, vec2(-20,0), -RPMo)
+
+EGP:egpAngle(66, Centre1, vec2(20,0), -MPH<-100? -100 : -MPH)
+
+EGP:egpSetText(57, Gear<1? "R" : toString(Gear-1))
+
+EGP:egpCircle(47, vec2(376,256), vec2(10,10))
+
+EGP:egpCircle(48, vec2(136,256), vec2(10,10))
+
+EGP:egpSetText(59, toString(( Speed==0? 0 : round(Speed*100)/100) ))
+
+EGP:egpSetText(60, toString(time("day"))+"/"+toString(time("month"))+"/"+toString(time("year")))
+
+
+
+
+MPH=-(Speed>100? 100 : Speed)*2.7
+
+EGP:egpLine(49, Centre1, Centre1+vec2(-80,0):rotate(MPH))
+
+EGP:egpLine(50, Centre1+vec2(0,-10):rotate(MPH), Centre1+vec2(-80,0):rotate(MPH))
+
+EGP:egpLine(51, Centre1+vec2(0,10):rotate(MPH), Centre1+vec2(-80,0):rotate(MPH))
+
+EGP:egpCircle(52, Centre1+vec2(-80,0):rotate(MPH), vec2(2,2))
+EGP:egpColor(52, vec(255,0,0))
+
+RPMo=RPM/(ceil(MaxRPM/1000)*1000)*270
+
+
+EGP:egpLine(53, Centre2, Centre2+vec2(80,0):rotate(RPMo))
+
+EGP:egpLine(54, Centre2+vec2(0,-10):rotate(RPMo), Centre2+vec2(80,0):rotate(RPMo))
+
+EGP:egpLine(55, Centre2+vec2(0,10):rotate(RPMo), Centre2+vec2(80,0):rotate(RPMo))
+
+EGP:egpCircle(56, Centre2+vec2(80,0):rotate(RPMo), vec2(2,2))
+EGP:egpColor(56, vec(255,0,0))
+
+EGP:egpLine(70, vec2(136,256)+vec2(100,0):rotate((((MaxRPM/1000)*0.8))/(MaxRPM/1000)*270), vec2(136,256)+vec2(60,0):rotate(((((MaxRPM/1000)*0.8))/(MaxRPM/1000)*270)))
+EGP:egpColor(70, vec(255,0,0))
+
+}

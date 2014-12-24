@@ -1,0 +1,9 @@
+@name Balance11
+@inputs Pitch Roll DeltaPitch DeltaRoll 
+@outputs PP PM RP RM 
+
+
+PP=Pitch+(DeltaPitch*2)
+PM=-(Pitch+(DeltaPitch*2))
+RP=Roll+(DeltaRoll*2)
+RM=-(Roll+(DeltaRoll*2))

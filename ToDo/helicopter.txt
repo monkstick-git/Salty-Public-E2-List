@@ -1,0 +1,8 @@
+@name Helicopter
+@inputs W A S D Space Shift
+@persist TIME
+interval(1)
+E = entity():isWeldedTo()
+if(Space==1){TIME=TIME+0.2}else{}
+
+E:applyForce(E:up()*(TIME/2) * E:mass())

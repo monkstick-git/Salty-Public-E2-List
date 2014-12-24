@@ -1,0 +1,16 @@
+@name Gforce
+@inputs 
+@outputs A1
+@persist B
+@trigger 
+
+runOnTick(1)
+if(tickClk()){
+A = ( B - toUnit("mph", entity():vel():length()) )/15
+entity():isWeldedTo():setColor(vec(A*100,255-(A*100),0))
+
+#print(A)
+
+A1 = A
+B = toUnit("mph", entity():vel():length())
+}

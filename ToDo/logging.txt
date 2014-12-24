@@ -1,0 +1,14 @@
+@name Logging
+@inputs 
+@outputs 
+@persist A:array
+@trigger 
+
+interval(1000)
+
+if(first()|duped()){
+
+}
+findIncludePlayerProps(owner())
+findByClass("prop_*")
+Prop = findToArray()

@@ -1,0 +1,22 @@
+@name PropMover
+@inputs 
+@outputs 
+@persist Owners:array Am
+@trigger 
+if(first()|duped()){
+    Am = 100
+}
+interval(1)
+findIncludePlayerProps(owner())
+findByClass("prop_*")
+Owners = findToArray()
+Am = 100
+while(perf()){
+for(I=1,Owners:count()){
+  Am = Am + 30
+Prop = Owners[I,entity]
+
+Prop:setPos(owner():pos() + vec(0,0,Am))
+  
+}
+}

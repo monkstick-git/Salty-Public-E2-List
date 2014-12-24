@@ -1,0 +1,21 @@
+@name Turn1
+@inputs Left Right Legnth
+@outputs Hyd Hyd2 Weld
+@persist 
+@trigger 
+
+
+
+if(Left==1){Hyd=0}
+if(Right==1){Hyd=200}
+if(Left==1){Hyd2=200}
+if(Right==1){Hyd2=0}
+if(Left ==0 & Right==0){Hyd=0}
+if(Left ==0 & Right==0){Hyd2=0}
+
+if(Legnth > 95 & Legnth < 96 & Left == 0 & Right == 0){
+ Weld = 1   
+}
+else{
+ Weld = 0   
+}

@@ -1,0 +1,26 @@
+@name Plumbob
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+for(I=1,2){
+holoCreate(I)
+holoModel(I,"cone")
+holoScale(I,vec(2,2,2))
+}
+
+holoAng(2,ang(180,0,0))
+holoPos(2,holoEntity(2):pos() - vec(0,0,12))
+holoPos(1,holoEntity(1):pos() + vec(0,0,12))
+
+holoColor(1,vec(0,255,0))
+holoColor(2,vec(0,255,0))
+
+holoParent(2,1)
+
+holoPos(1,owner():pos() + vec(0,0,120))
+
+holoParentAttachment(1,owner(),"eyes")
+
+

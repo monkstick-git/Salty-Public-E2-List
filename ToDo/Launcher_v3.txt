@@ -1,0 +1,52 @@
+@name Launcher v3
+@inputs Shift
+@outputs Ready E:entity
+@persist Ball:entity E:entity Ready Model:string A
+@trigger
+#@model models/weapons/w_models/w_minigun.mdl
+@model models/howitzer/howitzer_105mm.mdl
+interval(10)
+if(first() | dupefinished())
+{
+    holoCreate(1)
+    E = entity()
+    Ready = 1
+    Model = "models/props_junk/watermelon01.mdl"    #change this model path to what you want the bombs to be
+    Ready = 1
+}
+
+
+if(clk()){
+    
+ Ranger =    rangerOffset(100000,entity():pos(),entity():forward())
+ holoPos(1,Ranger:position())
+
+if(Ready & Shift)
+{
+        Ready = 0
+        Ball = propSpawn(Model,0)  
+        Ball:setPos(E:toWorld(vec()))
+        Ball:setAng(E:toWorld(ang(0,0,0)))
+        Ball:setTrails(20,0,1,"trails/smoke",vec(),255)
+        Ball:propNotSolid(1)
+        Ball:propFreeze(0)
+        Ball:setMass(30000)
+        Ball:applyForce((E:forward() + vec(random(-0.01,0.01),random(-0.01,0.01),random(-0.01,0.01)))*Ball:mass()*1000*5) 
+        Ball:setColor(vec(0,0,0))
+        entity():applyForce(-entity():forward() * 500000)
+         E:soundPlay(1,0,"acf_extra/tankfx/guns/105mmhowitzer.wav",3)
+         soundPitch(1,random(100,255))
+        timer("solid",0.01)
+        timer("remove",3000)
+        timer("ready",3000)
+    }
+}
+    ##########################
+    if(clk("ready")){Ready = 1}
+    if(clk("solid"))
+    {Ball:propNotSolid(0)}
+   if(clk("remove"))
+{Ball:propDelete()}
+    
+
+

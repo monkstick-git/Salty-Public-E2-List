@@ -1,0 +1,12 @@
+@name Minigun
+@inputs Speed On
+@outputs Gun
+@persist 
+@trigger 
+
+if(Speed > 20 & On == 1){
+ Gun = 1   
+}
+else{
+ Gun = 0   
+}

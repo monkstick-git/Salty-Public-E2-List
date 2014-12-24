@@ -1,0 +1,86 @@
+@name Holopad Export
+
+#####
+# Holograms authored by Muneris on 27/02/2013
+# Exported from Holopad 09/11/2012 (BETA 6.7) by Bubbus
+# Thanks to Vercas for the original E2 export template!
+#
+# FOR AN EXPLANATION OF THE CODE BELOW, VISIT http://code.google.com/p/holopad/wiki/NewE2ExportFormatHOWTO
+##### 
+
+#####
+# Hologram spawning data
+@persist [Holos Clips]:table HolosSpawned HolosStep LastHolo TotalHolos
+@persist E:entity
+#####
+
+
+if (first() | duped())
+{
+    E = entity()
+
+    function number addHolo(Pos:vector, Scale:vector, Colour:vector4, Angles:angle, Model:string, Material:string, ParentNo:number)
+    {        
+        local Parent = (ParentNo > 0) ? holoEntity(ParentNo) : E
+
+        holoCreate(LastHolo, Parent:toWorld(Pos), Scale, Parent:toWorld(Angles))
+        holoModel(LastHolo, Model)
+        holoMaterial(LastHolo, Material)
+        holoColor(LastHolo, vec(Colour), Colour:w())
+        holoParent(LastHolo, Parent)
+
+        local Key = LastHolo + "_"
+        local I=1
+        while (Clips:exists(Key + I))
+        {
+            holoClipEnabled(LastHolo, 1)
+            local ClipArr = Clips[Key+I, array]
+            local ThisEnt = holoEntity(LastHolo)
+            holoClip(LastHolo, I, ClipArr[1, vector], ClipArr[2, vector], 0)
+            I++
+        }
+        
+        return LastHolo
+    }
+
+    ##########
+    # HOLOGRAMS
+    
+
+    #[   ]#    Holos[1, array] = array(vec(0.0000, -83.8312, 0.0000), vec(10.0000, 5.0000, 10.0000), vec4(255, 242, 0, 255), ang(-0.0000, 0.0000, 0.0000), "icosphere3", "", 0)
+    #[   ]#    Holos[2, array] = array(vec(13.2549, -42.0268, 28.0917), vec(1.0000, 1.0000, 1.0000), vec4(255, 0, 0, 255), ang(-0.0000, 0.0000, 0.0000), "hq_icosphere", "", 0)
+    #[   ]#    Holos[3, array] = array(vec(-10.9090, -42.6326, 27.9250), vec(1.0000, 1.0000, 1.0000), vec4(255, 0, 0, 255), ang(-0.0000, 0.0000, 0.0000), "hq_icosphere", "", 0)
+    
+    ##########
+    
+    TotalHolos = Holos:count()
+    if (0 > holoClipsAvailable()) {error("A holo has too many clips to spawn on this server! (Max per holo is " + holoClipsAvailable() + ")")}
+}
+
+
+#You may place code here if it doesn't require all of the holograms to be spawned.
+
+
+if (HolosSpawned)
+{
+    #Your code goes here if it needs all of the holograms to be spawned!
+}
+else
+{
+    while (LastHolo <= Holos:count() & holoCanCreate() & perf())
+    {
+        local Ar = Holos[LastHolo, array]
+        addHolo(Ar[1, vector], Ar[2, vector], Ar[3, vector4], Ar[4, angle], Ar[5, string], Ar[6, string], Ar[7, number])
+        LastHolo++
+    }
+    
+    if (LastHolo > Holos:count())
+    {
+        Holos:clear()
+        Clips:clear()
+        HolosSpawned = 1
+        E:setAlpha(0)
+    }
+
+    interval(1000)
+}

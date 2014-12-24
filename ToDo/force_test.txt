@@ -1,0 +1,15 @@
+@name Force Test
+runOnTick(1)
+Temp=entity(),Entity=(Temp:getConstraints():count() > 0 ? Temp:isWeldedTo() : Temp)
+ 
+Angle=-Entity:angles()*15-Entity:angVel()*2
+Center=Entity:massCenter(),Right=Entity:right(),Forward=Entity:forward(),Up=Entity:up()
+Entity:applyForce((vec(0,0,9.015)-Entity:vel())*Entity:mass())
+Leverage=Entity:inertia():length()
+ 
+#Entity:applyOffsetForce( Up   *Angle:pitch(),Center-Forward*Leverage)
+#Entity:applyOffsetForce(-Up   *Angle:pitch(),Center+Forward*Leverage)
+#Entity:applyOffsetForce( Right*Angle:yaw()  ,Center-Forward*Leverage)
+#Entity:applyOffsetForce(-Right*Angle:yaw()  ,Center+Forward*Leverage)
+Entity:applyOffsetForce( Up   *Angle:roll() ,Center-Right  *Leverage)
+Entity:applyOffsetForce(-Up   *Angle:roll() ,Center+Right  *Leverage)

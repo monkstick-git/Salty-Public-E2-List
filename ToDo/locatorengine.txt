@@ -1,0 +1,26 @@
+@name Locatorengine
+@inputs Bear But Speed
+@outputs T1 T2 Sound
+@persist 
+@trigger 
+
+
+Sound = (Speed / 20) + 0.3
+if(But == 1 | Speed < 2){
+if(Bear > 0){
+ T1 = 180
+T2 = 0
+}
+if(Bear < 0){
+ T1 = 0
+T2 = 180
+}
+}
+if(But == 0 & Speed > 2){
+ T1 = 0
+T2 = 0   
+}
+if(Speed > 40){
+ T1 = 0
+T2 = 0   
+}

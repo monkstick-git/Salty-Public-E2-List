@@ -1,0 +1,23 @@
+@name DeltaBalance
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+interval(100)
+if(first()|duped()){
+    
+}
+P = entity():angles():pitch() 
+R = entity():angles():roll() 
+DP = $P
+DR = $R
+PP = P+(DP*2)
+PM = -(P+(DP*2))
+RP = R+(DR*2)
+RM = -(R+(DR*2))
+MASS=entity():isWeldedTo():mass()*4
+
+#entity():isWeldedTo():applyAngForce(ang(PM*MASS,0,RM*MASS))
+entity():isWeldedTo():applyAngForce(ang(PP*MASS,0,RP*MASS))
+

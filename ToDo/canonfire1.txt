@@ -1,0 +1,30 @@
+@name cannonfire1
+@inputs Time M1
+@outputs C1 C2 C3 C4
+@persist 
+@trigger 
+
+if(Time > 0 & Time < 3.5 & M1 == 1){
+ C1 = 1   
+}
+else{
+ C1 = 0   
+}
+if(Time > 3.6 & Time < 7 & M1 == 1){
+ C2 = 1   
+}
+else{
+ C2 = 0   
+}
+if(Time > 7.1& Time < 10.5 & M1 == 1){
+ C3 = 1   
+}
+else{
+ C3 = 0   
+}
+if(Time > 10.6 & Time < 14 & M1 == 1){
+ C4 = 1   
+}
+else{
+ C4 = 0   
+}

@@ -1,0 +1,25 @@
+@name I have no idea what I am doing
+@inputs Active
+@outputs Sound1 Sound2 Sound3 Sound4 Volume
+@persist
+interval(5)
+if(first()|duped()){
+    Sound1 = 0 
+    Sound2 = 0 
+    Sound3 = 0 
+    Sound4 = 0   
+    Volume=100
+}
+if(Active){
+
+     Sound1 = !Sound1   
+     Sound2 = !Sound2   
+     Sound3 = !Sound3   
+     Sound4 = !Sound4   
+}else{
+    Sound1=1
+    Sound2=1
+    Sound3=1
+    Sound4=1
+}
+

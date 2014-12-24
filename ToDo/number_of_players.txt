@@ -1,0 +1,74 @@
+@name Number of players
+@inputs EGP:wirelink Button
+@persist Props:array PNG:array ARRAY:array
+interval(100)
+if(first() | duped()){
+    EGP:egpClear()
+ EGP:egpText(100,hostname(),vec2(10,10))  
+EGP:egpText(110,"Made by Muneris for the BlueOrifice server(s)",vec2(10,480))
+EGP:egpSize(110,13)
+}
+
+    if(ARRAY:count() > 13){
+ ARRAY = array()   
+}
+ EGP:egpText(100,hostname(),vec2(10,10))  
+ EGP:egpText(101,time("hour"):toString() + " :",vec2(10,470)) 
+ EGP:egpText(102,time("min"):toString()+ " :",vec2(40,470)) 
+ EGP:egpText(103,time("sec"):toString(),vec2(70,470)) 
+#EGP:egpText(104,map(),vec2(400,470))
+#EGP:egpText(104,"Server Functions: " + countFunctions():toString(),vec2(340,470))
+EGP:egpText(112,(ceil(realtime()/60)):toString(),vec2(270,470))
+
+for (I=1,numPlayers())
+
+{
+T = players():entity(I):ping()
+
+ARRAY = ARRAY:add(array(T))
+EGP:egpText(I,players():entity(I):name(),vec2(10,I * 45 - (I * 10) + 10 ))
+EGP:egpText(I + 250,"---------------------------------------------------------------------------------------",vec2(0,I * 45 - (I * 10) + 25))
+EGP:egpColor(I +250,vec(0,0,255))
+EGP:egpText(I + 200,"Ping:   " + players():entity(I):ping():toString(),vec2(400,I * 45 - (I * 10) + 10 ))
+EGP:egpColor(I,vec(0,255,0))
+EGP:egpColor(I + 200,vec(players():entity(I):ping(),255 - players():entity(I):ping(),0))
+PNG = array():add(array(players():entity(I):ping()))
+EGP:egpText(111,("Server Uptime: "),vec2(150,470))
+
+
+
+if(players():entity(I):isAdmin()){
+EGP:egpRemove(I)
+EGP:egpText(I,players():entity(I):name() + " [Admin]",vec2(10,I * 45 - (I * 10) + 10 )) 
+EGP:egpColor(I,vec(255,220,0))
+EGP:egpFont(I, "Lucida Console")
+}
+
+EGP:egpText(120,"Ping:   " +  floor(ARRAY:average()):toString(),vec2(400,I * 45 - (I * 10) + 50 ))
+EGP:egpText(121,"Average ",vec2(330,I * 45 - (I * 10) + 50 ))
+EGP:egpColor(120,vec(floor(ARRAY:average()),255 - floor(ARRAY:average()),0))
+EGP:egpColor(121,vec(floor(ARRAY:average()),255 - floor(ARRAY:average()),0))
+}
+
+if(changed(numPlayers())){
+    for(I=1,numPlayers()){
+ EGP:egpClear()  
+ EGP:egpText(100,hostname(),vec2(10,10))  
+EGP:egpText(110,"Made by Muneris for the BlueOrifice server(s)",vec2(10,500))
+EGP:egpSize(110,13) 
+    }
+}
+
+#for(I=1,
+if(Button == 1){
+ EGP:egpClear()  
+ EGP:egpText(100,hostname(),vec2(10,10))  
+EGP:egpText(110,"Made by Muneris for the BlueOrifice server(s)",vec2(10,470))
+EGP:egpSize(110,13)
+
+}
+else{
+    
+}
+
+

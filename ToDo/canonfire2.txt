@@ -1,0 +1,46 @@
+@name CANONFIRE2
+@inputs M1
+@outputs C1 C2 C3 C4 DEBUG
+@persist CT
+@trigger 
+if(first() | duped()){
+ CT = 0 
+}
+if(M1 == 1){
+ CT++   
+}
+else{
+    
+}
+if(CT == 5){
+    CT = 1
+}
+   
+
+if(M1 == 1 & CT == 1){
+   C1 = 1 
+}
+else{
+ C1 = 0   
+}
+
+if(M1 == 1 & CT == 2){
+    C2 = 1
+}
+else{
+ C2 = 0   
+}
+if(M1 == 1 & CT == 3){
+    C3 = 1
+}
+else{
+ C3 = 0   
+}
+if(M1 == 1 & CT == 4){
+    C4 = 1
+}
+else{
+ C4 = 0   
+}
+
+DEBUG = CT

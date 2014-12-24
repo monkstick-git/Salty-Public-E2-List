@@ -1,0 +1,23 @@
+@name MunsPlane
+@inputs P Y R
+@outputs L R U D
+@persist 
+@trigger 
+
+if(P>10){
+ U=1   
+}
+else{
+ U=0   
+}
+if(Y>10){
+ L=1   
+}else{
+L=0
+}
+if(Y<-10){
+ R=1   
+}else{
+R=0
+}
+

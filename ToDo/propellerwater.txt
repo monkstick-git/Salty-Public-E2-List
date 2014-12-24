@@ -1,0 +1,37 @@
+@name PropellerWater
+@inputs Faster Slower A W
+@outputs TIME
+@persist TIME E:entity Rotor
+@trigger 
+interval(1)
+if(first()|duped()){
+        Sound = "/vehicles/chopper_rotor2.wav"
+       soundPlay(1,0,Sound)
+
+E=entity():isWeldedTo()
+holoCreate(1)
+holoModel(1,"models/sprops/trans/air/prop_5b_s.mdl")
+holoAng(1,entity():toWorld(ang(0,0,0)))
+holoParent(1,entity())
+}
+if(Faster==1){
+TIME=TIME+0.05
+}
+if(Faster==0){
+TIME=TIME-0.05
+}
+if(TIME<0){
+TIME=0}
+if(TIME>=10){TIME=10}
+
+SPEED = entity():vel():length()
+soundPitch(1,(TIME*1.4+(SPEED/1)/30))
+
+Rotor=Rotor+TIME
+if(entity():isUnderWater() & W==1 & A==0){
+entity():applyForce(E:right()*(TIME*4) * E:mass() + vec(0,0,-700))
+}
+
+holoAng(1,entity():toWorld(ang(90,0,Rotor*2)))
+
+#soundPitch(2,(TIME*1.4+(SPEED/1)/30))

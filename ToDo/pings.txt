@@ -1,0 +1,17 @@
+@name Pings
+@inputs 
+@outputs X Y G
+@persist A B P
+@trigger 
+
+runOnTick(1)
+if(tickClk()){
+P = owner():ping() 
+
+A=A+1
+if(A>=P){G=P*10}else{G=0}
+if(A>=45){B=B+1 A=0}
+if(B>=45){A=0 B=0}
+X=A
+Y=B
+}

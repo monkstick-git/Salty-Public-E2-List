@@ -1,0 +1,22 @@
+@name Takeapart
+@inputs 
+@outputs 
+@persist Prop:array Props:entity A
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+findIncludePlayerProps(owner())
+findByClass("prop_*")
+Prop = findToArray()
+}
+if(tickClk()){
+A=A+1
+for(I=1,1){
+    
+    Props = Prop[A,entity]
+    IN = 50
+    Props:setTrails(100,0,1,"trails/physbeam",vec(255,0,0),255)
+    Props:setPos(Props:pos() + vec(cos(A*350)*IN,sin(A*350)*IN,sin(A*100)*IN))
+}
+#vec(A*10,A*10,A*10)
+}

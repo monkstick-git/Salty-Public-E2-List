@@ -1,0 +1,42 @@
+@name Holo - MiniMap By EarthShake
+@persist Players:array Entitys:array Prop:array
+runOnTick(1)
+findByClass("entity")
+#Players = players()
+#findInBox(vec(-9999999,-9999999,-999999),vec(999999,999999,9999999))
+
+if(first())
+{
+  #Surface
+    holoCreate(0)
+    holoPos(0,entity():toWorld(vec(0,0,5)))   
+    holoScale(0,vec(40,40,0.1))
+    holoColor(0,vec(0,0,0))
+
+}
+
+for(I=1,numPlayers())
+{
+    XPlayer = players()[I,entity]:pos():x()-entity():pos():x()
+    YPlayer = players()[I,entity]:pos():y()-entity():pos():y()
+    ZPlayer = players()[I,entity]:pos():z()-entity():pos():z()
+    holoCreate(I)
+    holoPos(I,holoEntity(0):pos()+vec(XPlayer/100,YPlayer/100,ZPlayer/100+5))
+    holoModel(I,Players[I,entity]:model())
+    holoScale(I,vec(0.4,0.4,0.4))
+    holoAng(I,Players[I,entity]:angles())
+}
+
+#[findByClass("gmod_wire_expression2")
+Prop = findToArray()
+for(I=1,Prop:count()){
+    XProps = Prop[I,entity]:pos():x()-entity():pos():x()
+    YProps = Prop[I,entity]:pos():y()-entity():pos():y()
+    ZProps = Prop[I,entity]:pos():z()-entity():pos():z()
+    
+    holoCreate(I+13)
+    holoPos(I+13,holoEntity(0):pos()+vec(XProps/100,YProps/100,ZProps/100+5))
+    holoModel(I+13,Prop[I,entity]:model())
+    holoScale(I+13,vec(0.4,0.4,0.4))
+    holoColor(I+13,vec(255,0,0))
+}]#

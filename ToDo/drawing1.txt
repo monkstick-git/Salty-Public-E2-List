@@ -1,0 +1,19 @@
+@name dRAWING1
+@inputs E:wirelink Clk X Y
+@outputs 
+@persist A
+@trigger 
+runOnTick(1)
+E:egpDrawTopLeft(0)
+E:egpText(1,X:toString() +"#-----#" +Y:toString(),vec2(0,256))
+if(tickClk()){
+E:egpBox(2,vec2(X*512,Y*512),vec2(10,10))
+E:egpText(3,E:egpNumObjects():toString(),vec2(400,400))
+if(Clk){
+    A = A + 1
+ E:egpBox(A+3,vec2(X*512,Y*512),vec2(20,20))
+}
+if(E:egpNumObjects()>=300&A>300){
+ A = 0   
+}
+}

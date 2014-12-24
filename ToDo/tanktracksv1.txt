@@ -1,0 +1,32 @@
+@name TankTracksv1
+@inputs
+@outputs 
+@persist A B
+@trigger 
+interval(10)
+if(first()){
+    B=1
+ for(I=1,40){
+ holoCreate(I)   
+holoScale(I,vec(0.5,1,0.5))
+holoEntity(I):setTrails(100,0,1,"trails/physbeam",vec(255,0,0),255)
+}   
+}
+###################
+    if(B == 1){
+     A=A+1   
+    }
+    if(B == 0){
+     A=A-1   
+    }
+    if(A>=100){
+     B=0   
+    }
+    if(A<=0){
+     B=1   
+    }
+##################
+
+for(I=1,40){
+ holoPos(I,entity():pos() + vec((I*10)+sin(curtime()*100)*50,0,B*(I*10)*50))
+}

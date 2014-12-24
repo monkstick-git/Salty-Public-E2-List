@@ -1,0 +1,16 @@
+@name Scanner2
+@inputs Range:vector Range2 Gps:vector EGP:wirelink
+@outputs Legn HoloPos:vector
+@persist Time
+@trigger 
+runOnTick(1)
+if(tickClk()){
+
+Time = Time + 0.1
+
+if(Time > 100){
+ Time = 0   
+}
+Legn = floor(Time) + 100
+HoloPos = (Gps * vec(0,0,1))-vec(0,-90,0) + (Range*vec(1,1,0)) + vec(0,0,Range2)
+}

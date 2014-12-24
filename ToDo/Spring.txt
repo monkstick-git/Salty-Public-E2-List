@@ -1,0 +1,32 @@
+@name Spring
+@inputs [Top,Bottom]:entity
+@outputs 
+@persist Range TrueRange:vector Scale
+@trigger 
+
+if(first() | duped())
+{
+     Scale = 1
+     holoCreate(2)
+    holoAlpha(2,255)
+    holoModel(2,"hq_rcylinder_thin")
+    holoScale(2,vec(0.3,0.3,1))
+     holoCreate(1)
+     holoModel(1,"models/sprops/trans/misc/coil.mdl")
+     holoScale(1,vec(1,1,Scale))   
+     holoPos(1,Top:pos())
+    holoParent(2,holoEntity(1))
+}
+interval(10)
+
+Range = Bottom:pos():z() + ((Top:pos():z() - Bottom:pos():z())/2)
+Height = ((Top:pos():z() - Bottom:pos():z())/2)/8
+
+holoPos(2,vec(Bottom:pos():x(),Bottom:pos():y(),Range))
+holoPos(1,holoEntity(2):pos() - vec(0,0,Height*6))
+holoScale(1,vec(1,1,Height))
+holoScale(2,vec(0.2,0.2,Height))
+
+Ang = (Bottom:pos() -  Top:pos()):toAngle()
+holoAng(1,Ang + ang(-90,0,0))
+

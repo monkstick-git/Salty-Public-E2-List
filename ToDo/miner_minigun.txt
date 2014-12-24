@@ -1,0 +1,108 @@
+@name Miner MiniGun
+@inputs Pod:wirelink
+@outputs Fire
+@persist Timer A
+@trigger 
+
+runOnTick(1)
+E = entity()
+O = owner()
+Timer= Timer+1*A
+T=Timer
+M1 = Pod["Mouse1",number]
+M2 = Pod["Mouse2",number]
+Ang = ang(0,90,0)
+
+if(first()|duped()){
+    Sound = "thrusters/Hover02.wav"
+    Sound2 = "weapons/airboat/airboat_gun_loop2.wav"
+           soundPlay(1,0,Sound)
+         soundPlay(2,0,Sound2)
+    holoCreate(1)
+    holoPos(1,E:toWorld(vec(0,0,4)))
+    holoModel(1,"cylinder")
+    holoScale(1,vec(1,1,0.7))
+    holoMaterial(1,"models/shiny")
+    holoColor(1,vec(0,0,0))
+    holoAng(1, E:angles())
+    
+    holoCreate(2)
+    holoPos(2,E:toWorld(vec(0,-4,25)))
+    holoModel(2,"hqtube")
+    holoScale(2,vec(0.25,0.25,4))
+    holoMaterial(2,"models/shiny")
+    holoColor(2,vec(0,0,0))
+    holoAng(2, E:angles())
+
+    holoCreate(3)
+    holoPos(3,E:toWorld(vec(0,4,25)))
+    holoModel(3,"hqtube")
+    holoScale(3,vec(0.25,0.25,4))
+    holoMaterial(3,"models/shiny")
+    holoColor(3,vec(0,0,0))
+    holoAng(3, E:angles())
+
+    holoCreate(4)
+    holoPos(4,E:toWorld(vec(4,0,25)))
+    holoModel(4,"hqtube")
+    holoScale(4,vec(0.25,0.25,4))
+    holoMaterial(4,"models/shiny")
+    holoColor(4,vec(0,0,0))
+    holoAng(4, E:angles())
+    
+    holoCreate(5)
+    holoPos(5,E:toWorld(vec(-4,0,25)))
+    holoModel(5,"hqtube")
+    holoScale(5,vec(0.25,0.25,4))
+    holoMaterial(5,"models/shiny")
+    holoColor(5,vec(0,0,0))
+    holoAng(5, E:angles())
+    
+    holoCreate(6)
+    holoPos(6,E:toWorld(vec(0,0,47)))
+    holoModel(6,"hqcylinder")
+    holoScale(6,vec(1,1,0.07))
+    holoMaterial(6,"models/shiny")
+    holoColor(6,vec(0,0,0))
+    holoAng(6, E:angles())
+    
+    holoCreate(7)
+    holoPos(7,E:toWorld(vec(0,0,20)))
+    holoModel(7,"hqcylinder")
+    holoScale(7,vec(1,1,0.3))
+    holoMaterial(7,"models/shiny")
+    holoColor(7,vec(0,0,0))
+    holoAng(7, E:angles())
+    
+    holoCreate(8)
+    holoPos(8,E:toWorld(vec(0,0,42)))
+    holoModel(8,"hqcylinder")
+    holoScale(8,vec(1,1,0.07))
+    holoMaterial(8,"models/shiny")
+    holoColor(8,vec(0,0,0))
+    holoAng(8, E:angles())
+    
+    holoCreate(9)
+    holoPos(9,E:toWorld(vec(0,0,37)))
+    holoModel(9,"hqcylinder")
+    holoScale(9,vec(1,1,0.07))
+    holoMaterial(9,"models/shiny")
+    holoColor(9,vec(0,0,0))
+    holoAng(9, E:angles())
+for(I=2,9){
+ holoParent(I,1)   
+}
+}
+holoPos(1,entity():pos())
+holoAng(1,entity():angles()+ang(T,0,0))
+holoAng(1,E:toWorld(ang(0,T*3,0)))
+if(M2&A<10.1){
+ A=A+0.05 
+}
+if(M2==0 & A>=0){A=A-0.05} if(A<0){A=0}
+if(M1 & A>=10){
+ Fire=1   
+}else{Fire=0}
+  soundPitch(1,A*10)
+if(M1&A>=10){ soundPitch(2,100)}else{ soundPitch(2,0)}
+

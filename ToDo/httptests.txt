@@ -1,0 +1,13 @@
+@name HTTPTESTS
+@inputs EGP:wirelink
+@outputs 
+@persist 
+@trigger 
+
+httpRequest("http://www.zlib.net/ChangeLog.txt")
+httpUrlDecode("https://dl.dropbox.com/u/37748400/oscillator%20Lyrics.txt")
+
+A = httpData()
+EGP:egpText(1,A,vec2(0,0))
+hint(A,1)
+

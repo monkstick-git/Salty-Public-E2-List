@@ -1,0 +1,33 @@
+@name Timer 
+@inputs Ranger Reset S
+@outputs Screen ONE TWO THREE
+@persist Start A B
+@trigger 
+interval(10)
+if(Ranger>=1 & Start==0){
+
+Start =1     
+}
+if(Start==1){
+A=A+0.01
+Screen = A
+}
+
+if(A>5 & Ranger>=1){
+Start=0
+}
+if(Reset==1){
+ reset()   
+}
+
+if (S){
+B=B+0.01
+if(B>=1){
+ ONE =1   
+}   
+if(B>=2)
+{TWO = 1}
+if(B>=3){
+ THREE =1    
+}
+}

@@ -1,0 +1,10 @@
+@name hYDaNGLE
+@inputs P
+@outputs L1 L2 R1 R2
+@persist 
+@trigger 
+
+L1=165 + (P)
+L2=165 + (P)
+R1=165 + (-P)
+R2=165 + (-P)

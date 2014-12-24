@@ -1,0 +1,45 @@
+@name Autorocket
+@inputs Range:entity
+@outputs Fire
+@persist C D
+@trigger 
+
+interval(1)
+if(first()|duped()){
+ holoCreate(1)   
+E1 = entity():isWeldedTo()
+}
+
+findByClass("npc_*")
+#findByModel("models/props_junk/wood_crate001a.mdl")
+findClosest(entity():pos())
+A = find()
+
+if(A){
+    if(A:pos():distance(entity():pos()) < 5000000){
+       D = 1
+A:setColor(vec(255,0,0),255)
+
+if(Range == find()){
+ Fire=1 
+
+if(C<1){
+#propSpawn("models/props_junk/wood_crate001a.mdl",owner():pos() + vec(0,0,100),ang(0,0,0),0)   
+}
+C=C+1
+
+}
+else{
+ Fire = 0
+C=0
+}
+}
+else{Fire=0
+    D=0}
+}
+else{Fire=0}
+
+holoPos(1,A:pos()+ A:angVelVector())
+if(D==1){
+#E1:applyForce(vec(0,0,500000*E1:mass()))
+}

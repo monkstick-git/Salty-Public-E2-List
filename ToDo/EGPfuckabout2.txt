@@ -1,0 +1,39 @@
+@name EGPfuckabout2
+@inputs EGP:wirelink
+@outputs  
+@persist Circle Amount Curtime Circle2
+@trigger 
+interval(1000)
+if(first()|duped()){
+    EGP:egpClear()
+ Amount = 60
+ Circle = 360/Amount
+Circle2 = 0
+for(I=1,Amount){
+EGP:egpText(I,I:toString(),vec2(0,0))
+#EGP:egpCircle(I,vec2(10,50),vec2(10,10))
+}
+}
+while(perf(100)){
+
+Circle2 = 360/Curtime
+EGP:egpColor(Curtime,vec(0,255,0))
+EGP:egpLine(120+Curtime,vec2(256,256),vec2(256,50))
+if(Curtime >= 60){Curtime = 0
+for(I=1,Amount){
+EGP:egpColor(I,vec(255,255,255)) 
+EGP:egpRemove(120+I)  
+   
+}
+#entity():setText(Curtime:toString())
+#EGP:egpLine(100,vec2(256,256),vec2(cos((Curtime-15)*6)*180,sin((Curtime-15)*6)*180) + vec2(256,256))
+EGP:egpLine(120+Curtime,vec2(256,256),vec2(sin((Curtime-30)*6)*180,cos((Curtime-30)*6)*180) + vec2(256,256))
+
+Curtime = Curtime + 1
+for(I=1,Amount){
+EGP:egpPos(I,vec2(cos((I-14-Curtime)*Circle)*230,sin((I-14-Curtime)*Circle)*230)+vec2(256,256))
+}
+
+}
+
+}

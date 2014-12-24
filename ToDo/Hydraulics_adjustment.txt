@@ -1,0 +1,9 @@
+@name Hydraulics adjustment
+@inputs 
+@outputs Consist Damp Legnth
+@persist 
+@trigger 
+interval(1000)
+Consist = 25000+ sin(curtime())
+Damp = 2500+ sin(curtime())
+Legnth = 41.3 + (sin(curtime())/100)

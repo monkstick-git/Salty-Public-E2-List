@@ -1,0 +1,43 @@
+@name TurnPlaneUAVMiniplane
+@inputs Left Right Legnth Up Down Gyro3 Space Gyro2 Space1 Height F L R
+@outputs Hyd Hyd2 Weld Hyd3 Hyd4 W1
+@persist SetHeight Gyro
+@trigger 
+Gyro = Gyro3 * -1
+SetHeight = 1000
+if(Height < SetHeight){W1 = 1  Down = 1}else{W1 = 0 Down = 0}
+if(Left==1){Hyd=10}
+if(Left==1){Hyd2=30}
+if(Right==1){Hyd=30}
+if(Right==1){Hyd2=10}
+if(Up == 1){Hyd3=40}
+if(Down == 1){Hyd3 = 20}
+
+#if(Up == 1){Hyd4=40}
+#if(Down == 1){Hyd4 = 50}
+
+if(Left ==0 & Right==0){Hyd=20}
+if(Left ==0 & Right==0){Hyd2=20}
+if(Up == 0 & Down == 0){Hyd3 = 20}
+if(Up == 0 & Down == 0){Hyd4 = 20}
+
+if(Space == 1){Hyd3 = Hyd3 + (Gyro) Hyd = Hyd + (Gyro2 / 4) Hyd2 = Hyd2 + (Gyro2 * -1 / 4)}
+if(Space1==1){Hyd=0 Hyd2=0 Hyd3=0 Hyd4=0}
+if(Legnth > 95 & Legnth < 96 & Left == 0 & Right == 0){
+ Weld = 1   
+}
+else{
+ Weld = 0   
+}
+if(F > 0 & R == 0 & L ==0){
+    Hyd3 = Hyd3 + (Gyro) Hyd = 10 + (Gyro2 / 4) Hyd2 = 30 + (Gyro2 * -1 / 4) W1=0 Hyd3 = 20
+}
+if(F > 0 & R == 0 & L > 0){
+    Hyd3 = Hyd3 + (Gyro) Hyd = 30 + (Gyro2 / 4) Hyd2 = 10 + (Gyro2 * -1 / 4) W1=0 Hyd3 = 20
+}
+if(F > 0 & R > 0 & L == 0){
+    Hyd3 = Hyd3 + (Gyro) Hyd = 10 + (Gyro2 / 4) Hyd2 = 30 + (Gyro2 * -1 / 4) W1=0 Hyd3 = 20
+}
+if(F > 0 & R > 1 & L > 0){
+    Hyd3 = Hyd3 + (Gyro) Hyd = 20 + (Gyro2 / 4) Hyd2 = 20 + (Gyro2 * -1 / 4) Hyd3 = 20 W1 = 0
+}

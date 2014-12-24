@@ -1,0 +1,18 @@
+@name Joystick
+@inputs X Y
+@outputs 
+@persist 
+@trigger 
+
+if(first()|duped()){
+ holoCreate(1)   
+holoCreate(2)
+holoModel(2,"hq_sphere")
+holoScale(2,vec(2,2,2))
+holoScale(1,vec(1,1,3))
+holoModel(1,"hq_sphere")
+holoPos(1,entity():pos() + vec(0,0,20))
+holoParent(1,2)
+}
+holoAng(2,ang(X,0,-Y))
+

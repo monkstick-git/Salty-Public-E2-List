@@ -1,0 +1,29 @@
+@name Herp Ear Rape
+@inputs Toggle On
+@outputs 
+@persist A
+@trigger 
+interval(200)
+if(On==1){
+A =A+1
+if(A > 1 & A < 4){
+soundPlay(1,0,"instruments/bass.wav")
+}
+
+if((A/2) > 1){
+soundPlay(2,0,"instruments/hi_hat.wav")
+
+}
+
+
+if(A >=4){
+soundPlay(2,0,"instruments/snare.wav")
+
+}
+
+if(A > 4){
+ soundPlay(2,0,"instruments/hi_hat.wav")
+A = 1
+}
+
+}

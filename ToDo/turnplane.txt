@@ -1,0 +1,24 @@
+@name TurnPlane
+@inputs Left Right Legnth Up Down
+@outputs Hyd Hyd2 Weld Hyd3
+@persist 
+@trigger 
+
+
+
+if(Left==1){Hyd=87}
+if(Right==1){Hyd=47}
+if(Left==1){Hyd2=47}
+if(Right==1){Hyd2=87}
+if(Up == 1){Hyd3=90}
+if(Down == 1){Hyd3 = 50}
+if(Left ==0 & Right==0){Hyd=66}
+if(Left ==0 & Right==0){Hyd2=66}
+if(Up == 0 & Down == 0){Hyd3 = 70}
+
+if(Legnth > 95 & Legnth < 96 & Left == 0 & Right == 0){
+ Weld = 1   
+}
+else{
+ Weld = 0   
+}

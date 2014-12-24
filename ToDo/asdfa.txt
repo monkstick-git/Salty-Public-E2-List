@@ -1,0 +1,30 @@
+@name asdfa
+@inputs Start Test:entity
+@outputs 
+@persist 
+@trigger 
+#@model models/mechanics/solid_steel/sheetmetal_plus_4.mdl
+
+if(first() | duped()){
+holoCreate(1)
+runOnTick(1)
+Start = 1
+}
+
+
+if(tickClk()){
+#if(Start == 1){
+    findByClass("RPG")
+    findSortByDistance(entity():pos())
+    X = find()
+    E = entity():isWeldedTo()
+E:setMass(5000)
+E:setPos(X:pos())
+E:setAng(X:angles())
+#holoPos(1,owner():aimPos() + vec(0,0,20))
+holoModel(1,"hq_icosphere")
+#}
+#else{
+    
+#}
+}

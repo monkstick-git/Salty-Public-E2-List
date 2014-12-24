@@ -1,0 +1,54 @@
+@name AutoDriver
+@inputs 
+@outputs A D
+@persist Int Hit
+@trigger 
+
+interval(10)
+
+if(first() | duped()){
+holoCreate(1)
+holoCreate(2)
+holoCreate(3)   
+holoCreate(4)
+holoPos(4,entity():pos() + (entity():forward() * 10)) 
+holoParent(4,entity())
+holoCreate(5)
+
+holoColor(5,vec(255,0,0))
+}
+Speed = entity():vel():length()
+
+Int = Int + 100
+holoAng(4,entity():angles() + ang(0,sin(Int) * 5,0))
+RangerF = rangerOffset(300 + (Speed/2),entity():pos(),-holoEntity(4):forward())
+holoPos(5,RangerF:position()) #-(holoEntity(4):forward() * 300))
+
+if(RangerF:hit()){Hit = 2}
+Hit = clamp(Hit - 1,0,100)
+
+Ranger = rangerOffset(Speed * 2,entity():pos(),-entity():forward())
+
+holoPos(1,Ranger:position())
+RangerL = rangerOffset(100000,entity():pos(),(2*-entity():forward() - entity():right()))
+holoPos(2,RangerL:position())
+
+RangerR = rangerOffset(100000,entity():pos(),(2*-entity():forward() - -entity():right()))
+holoPos(3,RangerR:position())
+
+
+if(Ranger:hit() | Hit > 1){
+ if(RangerL:distance() > RangerR:distance())
+{
+    A = 0
+    D = 1
+   
+}else{
+    D = 0
+    A = 1
+} 
+
+}  else{
+ A = 0
+D = 0   
+} 

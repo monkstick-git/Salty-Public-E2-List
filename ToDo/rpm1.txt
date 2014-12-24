@@ -1,0 +1,13 @@
+@name RPM1
+@inputs Wheel:entity Wheel2:entity
+@outputs Screen Screen2
+@persist 
+@trigger 
+interval(1)
+#entity():setMass(250)
+#entity():applyTorque(vec(0,0,entity():mass() * 200))
+
+Screen = abs(Wheel:angVel():roll()/360*60)
+Screen2 = Screen / 100
+#Screen2 = abs(Wheel2:angVel():pitch()/360*60)
+#Screen = bearing(Wheel)

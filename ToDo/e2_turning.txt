@@ -1,0 +1,24 @@
+@name e2 turning
+@inputs A D A1 D1
+@outputs 
+@persist A2 D2 TurnAngle L R
+@trigger 
+@model models/hunter/plates/plate1x1.mdl
+#@model models/sprops/rectangles/size_2/rect_12x12x3.mdl
+#@model models/hunter/plates/plate025x075.mdl
+
+runOnTick(1)
+if(first() | duped()){TurnAngle = 30}
+if(tickClk()){
+
+
+if(A){ L = clamp(L + 0.1,0,1)}else{ L = clamp(L - 0.2,0,1)}
+if(D){ R = clamp(R + 0.1,0,1)}else{ R = clamp(R - 0.2,0,1)}
+
+
+E = entity()
+Base = E:isConstrainedTo("axis")
+Local = ang(0, TurnAngle*(L-R) - 90, 0) - Base:toLocal(E:angles())        
+DesAF = (Local*300 - E:angVel()*45) * shiftL(ang(E:inertia()))        
+E:applyAngForce( DesAF * ang(0,1,0))
+}

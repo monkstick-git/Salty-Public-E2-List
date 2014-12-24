@@ -1,0 +1,11 @@
+@name crashing
+@inputs EGP:wirelink
+@outputs 
+@persist 
+@trigger 
+
+runOnTick(1)
+EGP:egpClear()
+for(I=1,100){
+ EGP:egpBox(I,vec2(10,10),vec2(10,10))   
+}

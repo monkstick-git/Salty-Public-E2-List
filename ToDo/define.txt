@@ -1,0 +1,71 @@
+@name Define
+@persist URL:string Data:string Chat:array Search:string
+@outputs SCREEN:string
+
+#By Muhs
+#2011.1.30
+#wire_expression2_concmd 1
+#wire_expression2_concmd_whitelist say
+
+if (first() | duped()) {
+    runOnHTTP(1)
+    runOnChat(1)
+    URL = "http://www.google.com/search?&q=define:+"
+}
+
+if (chatClk()) {
+    Chat = lastSaid():explode(" ")
+    if (Chat[1,string] == "define") {
+        for (I = 0, Chat:count()) {
+            Search += Chat[I+2,string] + "%20"
+        }
+        timer("request",1)
+    }
+}
+
+if (clk("request")) {
+    if (httpCanRequest()) {
+        hint("Requesting!",3)
+        httpRequest(URL + Search)
+    } else {
+        hint("Cannot request!",3)
+        timer("request",500)
+    }
+}
+
+if (httpClk()) {
+    hint("httpClk()",3)
+    Data = httpData()
+    if (Data != "") {
+        if (Data:find("<li>")) {
+            Data = Data:sub(Data:find("<li>")+4)
+            Data = Data:sub(0,Data:find("<li>")-1)
+            Data = Data:sub(0,Data:find("<br>")-1)
+            Data = Data:replace("&quot;","'")
+            Data = Data:replace("&#39;","'")
+            Data = Data:replace(";",". ")
+            Data = Data:left(125)
+            timer("say",600)
+        } else {
+            timer("fail",600)
+        }
+    } else {
+        timer("error",600)
+    }
+}
+
+if (clk("say")) {
+    concmd("say " + Data)
+    SCREEN=("say " + Data)
+    reset()
+}
+
+if (clk("fail")) {
+    concmd("say No definitions were found.")
+    reset()
+}
+
+if (clk("error")) {
+    concmd("say An error occured!")
+    reset()
+}

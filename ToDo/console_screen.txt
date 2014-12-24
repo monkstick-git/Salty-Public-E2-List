@@ -1,0 +1,12 @@
+@name Console_Screen
+@inputs Screen:wirelink
+@persist A B C
+interval(100)
+if(first()|duped()){
+ Screen[2041]=1   
+}
+
+Screen:writeString(A:toString(),B,C,random(1000),0,0)
+
+
+

@@ -1,0 +1,26 @@
+@name failplane v1
+@inputs A D
+@outputs  RL RR
+@persist 
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+Rudder = 112
+FlapLeft = 9.4
+FlapRight = 9.4    
+}
+if(tickClk()){
+
+if(A){
+RR = 165
+RL=155
+}
+if(D){
+RL=165
+RR=155
+}
+if(A==0 & D==0){
+RL=160
+RR=160 
+}
+}

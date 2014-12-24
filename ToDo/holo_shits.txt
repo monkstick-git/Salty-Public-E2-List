@@ -1,0 +1,21 @@
+@name holo shits
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+interval(150)
+
+for(I=1,25){
+Wave   = sin(curtime()*10*I)*10
+Wave2 = cos(curtime()*10*I)*10
+#Angle  = I/25*300
+
+    holoCreate(I)
+    holoPos(I,entity():pos() + vec(Wave,Wave2,0))
+#    holoAng(I,ang(0,0,0))
+#    holoVisible(I,players(),1)
+#    holoColor(I,vec(randint(254,255), randint(254,255), randint(254,255)))
+}
+
+

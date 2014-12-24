@@ -1,0 +1,149 @@
+@name Muns Toy Car V1
+@inputs 
+@outputs  HeightCheck1Distance Camera:vector Ent:entity Pos:vector Ang:angle
+@persist A L R Speed TurnSpeed TurnRange MaxSpeed Think MinSpeed Acceloration MaxSpeedOld ShouldAngle
+@trigger 
+#runOnTick(1)
+interval(10)
+if(first()|duped())
+{
+    Array = array(
+    "models/props_vehicles/car002a_physics.mdl",
+    "models/props_vehicles/car003a_physics.mdl",
+    "models/props_vehicles/car004a_physics.mdl",
+    "models/props_vehicles/car005a_physics.mdl",
+    "models/props_vehicles/van001a_physics.mdl",
+    "models/props_vehicles/truck001a.mdl")
+    
+    Names = array(
+    "R.Schumacca",
+    "B.Guzzla",
+    "M.Freeman",
+    "B.Wiser",
+    "P.Freeman",
+    "M.M",
+    "F.rank")
+    MaxSpeed = 5# Don't change
+    TurnSpeed = 45
+    TurnRange = 450
+    MinSpeed =45
+
+    MaxSpeedOld = 65
+    TurnBreaks = 1
+    Acceloration = 3
+    
+    ShouldAngle = 0
+    Rnd = vec(random(255),random(255),random(255))
+ holoCreate(1)
+ holoScale(1,vec(0.2,0.2,0.2))
+ holoModel(1,Array[randint(1,6),string])
+ holoPos(1,entity():pos() + vec(0,0,3))
+ holoColor(1,Rnd)
+ holoAng(1,ang(0,0,0))
+ L = 0
+R = 0
+Speed = 1
+holoCreate(2)
+holoCreate(3)
+holoCreate(4)
+holoCreate(5)
+holoScale(2,vec(10,1,1))
+
+holoColor(3,vec(255,0,0))
+holoColor(4,vec(255,255,0))
+holoColor(5,vec(0,0,255))
+        Sound = "/acf_engines/vtwin_large.wav"
+         holoEntity(1):soundPlay(1,0,Sound) 
+        holoEntity(1):setText(Names[randint(1,7),string])
+        holoEntity(1):setTrails(30,1,10, "trails/laser",Rnd, 155, holoEntity(1):id(), 2)
+}
+#if(tickClk())
+#{
+   # HoloPos = HoloPos 
+
+    Check = rangerOffset(1000000,holoEntity(1):pos() + vec(0,0,5),holoEntity(1):forward())
+    holoPos(2,Check:pos())
+    Debug = Check:distance()
+    
+    HeightCheck1 = rangerOffset(1000000,holoEntity(1):pos() + (holoEntity(1):forward() * 10) + vec(0,0,20),-holoEntity(1):up())
+    holoPos(5,HeightCheck1:pos())
+    HeightCheck1Distance = HeightCheck1:distance()
+    
+        HeightCheck = rangerOffset(1000000,holoEntity(1):pos() + vec(0,0,15),holoEntity(1):forward())
+  #  holoPos(2,Check:pos())
+    HeightCheckDistance = floor(HeightCheck:distance())
+    
+    if(HeightCheck1Distance < 22)
+    {
+    holoPos(1,holoEntity(1):pos() + vec(0,0,Speed))
+  #  holoAng(1,(-(Check:pos() - HeightCheck:pos()):toAngle() * ang(1,-2,1)))
+    }
+    
+    if(HeightCheck1Distance > 25 & ShouldAngle == 1)
+    {
+    holoPos(1,holoEntity(1):pos() - vec(0,0,Speed + 2))
+        
+    }
+    
+    Delta = floor(HeightCheckDistance - floor(Debug))
+    
+    CheckLeft = rangerOffset(100000000,Check:pos() + vec(0,0,5),holoEntity(1):right())
+   holoPos(3,CheckLeft:pos())
+    RightDist = CheckLeft:distance()
+    CheckRight = rangerOffset(100000000,Check:pos() + vec(0,0,5),-holoEntity(1):right())
+   holoPos(4,CheckRight:pos())
+    LeftDist = CheckRight:distance()
+    #holoEntity(1):setText(LeftDist:toString() + "  |  " + RightDist:toString())
+    
+    if(Debug <= 10)
+    {
+     #   holoAng(1,holoEntity(1):toWorld(ang(0,0,0)) - ((HeightCheck:pos() - Check:pos()):toAngle() + ang(90,0,0)) )
+
+            holoPos(1,holoEntity(1):pos() + vec(0,0,5))
+    }
+    
+    if((Debug < TurnRange) & (Delta) <= 0)
+    {
+        
+        
+    if(LeftDist > RightDist){
+       Speed = clamp(Speed - TurnBreaks,0,MaxSpeed)
+       L = L + TurnSpeed
+        R = 0
+    }
+    
+    
+    if(RightDist > LeftDist){
+       Speed = clamp(Speed - TurnBreaks,0,MaxSpeed)
+       R = R + TurnSpeed
+       L = 0
+    }
+    
+    }else{
+     L = 0 
+     R = 0
+    }
+
+   
+
+    Speed = clamp(Speed + Acceloration,0,MaxSpeed)
+    HoloPos = holoEntity(1):pos() + (holoEntity(1):forward() * Speed)
+    holoPos(1,HoloPos)
+    holoAng(1,holoEntity(1):toWorld(ang(0,0,0)) + ang(0,L - R,0))
+    
+    soundPitch(1,Speed * 5)
+    Think = Think + 1
+    if(Think > 66)
+    {
+        MaxSpeed = randint(MinSpeed,MaxSpeedOld)
+        Think = 0
+    }
+    
+    entity():setText((HeightCheck1Distance):toString())
+    holoAng(2,((Check:pos() - HeightCheck:pos()):toAngle()))
+    
+    Camera = holoEntity(1):pos()
+     Ent = holoEntity(1)
+    Pos = Ent:forward()
+    Ang = Ent:right():toAngle()
+#}

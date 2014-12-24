@@ -1,0 +1,30 @@
+@name Times
+@inputs EGP:wirelink
+@outputs 
+@persist Array:array Array2:array
+@trigger 
+runOnChat(1)
+interval(1000)
+if(first()|duped())
+{
+ Array = array()   
+ Array2 = array()   
+ for(I=1,15)
+{
+ Array[I,string] = "Test Person" 
+ Array2[I,number] = I
+}
+}
+
+for(I=1,15){
+ EGP:egpText(I,I + ": " +Array[I,string],vec2(25,I*20))   
+}
+
+if(chatClk())
+{
+ if(owner():lastSaid() == "!test")
+{
+    
+}
+   
+}

@@ -1,0 +1,28 @@
+@name Random1
+@inputs DS:wirelink
+@outputs
+@persist A B AM SPEED C
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+AM=640
+SPEED=100
+DS[1048574] = 0
+DS[1048569] = 2
+DS[1048572] = AM
+DS[1048573] = AM
+A=0
+B=0
+
+ holoCreate(1)
+holoModel(1,"hq_sphere")
+holoScale(1,vec(0.3,0.3,0.3))   
+}
+
+while(perf()){
+A=A+1
+if(A>=AM){B=B+SPEED A=0} 
+if(B>=AM) {B=0 A=0}
+DS[A+B*AM]=rgb2digi(vec(random(255),255-random(255),0),3) 
+}
+

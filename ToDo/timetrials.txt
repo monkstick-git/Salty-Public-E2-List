@@ -1,0 +1,88 @@
+@name Timetrials
+@inputs
+@outputs
+@persist Base:entity [P1 P2]:vector Timers:table Block:table
+ 
+if (first() | duped()) {
+    runOnTick(1)
+    concmd("ulx tsay Time Trials!")
+}
+ 
+if (tickClk()) {
+    if (!Base:isValid()) {
+        Base = entity():isWeldedTo()
+        if (Base) {
+            Pos = Base:pos()
+            Dir = Base:forward()
+           
+            rangerFilter(Base)
+            RD = rangerOffset(Pos,Pos + Dir * 99999)
+            HPos = RD:position()
+            Dist = (HPos:distance(Pos))
+            Count = ceil(Dist / 600)
+            SegLen = Dist / Count
+           
+            Size = Base:boxSize():y()
+            for (K=1,Count) {
+                holoCreate(K,Pos + Dir * SegLen * (K-0.5),vec(SegLen / 12,Size / 12,0.05),Base:toWorld(ang(0,0,0)))
+                holoMaterial(K,"models/props_combine/portalball001_sheet")
+                holoColor(K,vec(0,150,255))
+                holoParent(K,Base)
+            }
+           
+            TP1 = Pos + Dir * 24
+            RD1 = rangerOffset(TP1, TP1 - vec(0,0,99999))
+            TP2 = HPos - Dir * 12
+            RD2 = rangerOffset(TP2, TP2 - vec(0,0,99999))
+           
+            P1 = RD1:position() + vec(0,0,6)
+            P2 = RD2:position() + vec(0,0,Size)
+        }
+    }  
+   
+    if (Base:isValid()) {
+        if (findCanQuery()) {
+            Ri = Base:up()
+ 
+            B1 = P1 + Ri * 32
+            B2 = P2 - Ri * 32
+           
+            findIncludeClass("prop_physics")
+            findInBox(B2,B1)
+            Props = findToArray()
+            ID = 1
+           
+            C = curtime()
+            while (ID <= Props:count() & perf()) {
+                Prop = Props[ID,entity]
+                Owner = Prop:owner()
+                SID = Owner:steamID()
+                if (SID:length() > 5) {
+                    if (!Timers:exists(SID)) {
+                        if (Block[SID,number] <= C) {
+                            if (Owner:vehicle()) {
+                                Timers[SID,number] = C
+                                concmd("ulx tsay [Time Trials] Started race for: "+Owner:name())
+                            }
+                        }
+                    } else {
+                        T = Timers[SID,number]
+                        if (T + 5 <= C) {
+                            Timers:remove(SID)
+                            Diff = floor((C - T) * 100) / 100
+                            if (Owner:vehicle()) {
+                                concmd("ulx tsay [Time Trials] "+Owner:name()+" timed: "+Diff+" seconds this lap! ")
+                                Timers[SID,number] = C
+                              #  concmd("ulx tsay [Time Trials] Started race for: "+Owner:name())
+                            } else {
+                                concmd("ulx tsay [Time Trials] "+Owner:name()+" cheated.")
+                            }
+                            Block[SID,number] = C + 10
+                        }
+                    }
+                }
+                ID++
+            }
+        }
+    }
+}

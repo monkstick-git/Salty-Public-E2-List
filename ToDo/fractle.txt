@@ -1,0 +1,32 @@
+@name Fractle
+@inputs DS:wirelink
+@persist A B C A1 B1 C1 G
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+DS[1048574] = 0
+DS[1048569] = 2
+DS[1048572] = 128
+DS[1048573] = 128
+A=0
+B=0
+C=random(10)
+G=1
+ 
+}
+if(tickClk()){
+while(perf(50)){
+A=A+1
+if(A>=128){B=B+1 A=0} 
+if(B>=128) {B=0 A=0 C=random(10)}
+G=abs(sin((A*-B+(A- -B*C))*10))*5
+#G=random(51)
+#A=random(512)
+#B=random(512)
+DS[A+B*128]=rgb2digi(vec(G,G,G),3) 
+#DS[A+B*512]=rgb2digi(vec(G,G,G),3) 
+
+
+}
+}
+

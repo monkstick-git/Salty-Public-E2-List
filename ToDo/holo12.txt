@@ -1,0 +1,28 @@
+@name Holo12
+@inputs 
+@outputs 
+@persist Timer Timer2
+@trigger 
+interval(1)
+if(first() | duped()){
+ holoCreate(1)
+holoColor(1,vec(0,255,0))
+holoScale(1,vec(0.1,0.1,0.1))   
+holoEntity(1):setTrails(5,5,50,"trails/physbeam",vec(0,255,0),255)
+
+ holoCreate(2)
+holoColor(2,vec(0,255,0))
+holoScale(2,vec(0.1,0.1,0.1))   
+holoEntity(2):setTrails(5,5,50,"trails/physbeam",vec(0,0,255),255)
+
+}
+Timer = Timer + 2
+Timer2 = Timer - 20 
+if(Timer >= 360){
+ Timer = 0  
+holoEntity(2):setTrails(5,5,50,"trails/physbeam",vec(255,0,Timer),255) 
+}
+holoPos(1,owner():pos() + vec(sin(Timer * 2)*10,cos(Timer * 2)*10,10))
+holoPos(2,owner():pos() + vec(sin(Timer2 * 2)*10,cos(Timer2 * 2)*10,20))
+
+#holoPos(1,owner():pos() + rotate(Timer))

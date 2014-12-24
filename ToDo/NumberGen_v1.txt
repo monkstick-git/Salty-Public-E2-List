@@ -1,0 +1,44 @@
+@name NumberGen v1
+@inputs 
+@outputs 
+@persist Str:string Last
+@trigger 
+
+interval(10)
+
+if(first() | duped())
+{
+    Str1 = "9999"
+    Str = Str1:toNumber():toString()
+    Array = Str1:explode("")
+    for(I=1,Array:count()){holoCreate(I)}   
+
+}
+
+
+#print(abs(entity():vel():length()):toString())
+if(clk()){
+Max = 4
+
+Str = floor(abs(entity():vel():length())):toString()
+Array = Str:explode("")
+
+if(Array:count() < Max){
+    Diff = Max - Array:count()
+    Str = Diff + Str
+    Array = Str:explode("")
+    }
+
+for(I=1,Array:count()) {
+    Letter = "models/sprops/misc/alphanum/alphanum_" + Array[I,string] +".mdl"
+    if(Array[I,string] != " ")
+    {
+        if(!holoEntity(I):isValid()) {holoCreate(I)}
+        holoModel(I,Letter)
+        holoPos(I,entity():pos() + vec(I * -10,0,30))
+    }
+
+}
+
+Last = Array:count()
+}

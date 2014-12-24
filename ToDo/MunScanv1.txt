@@ -1,0 +1,32 @@
+@name MunScanv1
+@inputs DS:wirelink
+@outputs A B
+@persist A B C A1 B1 C1 Cur
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+DS[1048574] = 0
+DS[1048569] = 2
+DS[1048572] = 128
+DS[1048573] = 128
+A=0
+B=0
+C=1
+G=0
+}
+if(tickClk()){
+while(perf(9)){
+Cur =Cur+0.01
+A=A+1
+if(A>=128){B=B+1 A=0} 
+if(B>=128) {B=0 A=0}
+
+A=(sin(Cur))*128
+B=(cos(Cur))*128
+
+G=abs(cos(Cur))*128
+DS[A+B*128]=rgb2digi(vec(G,G,G),3) 
+}
+}
+
+

@@ -1,0 +1,71 @@
+@name TorqueBalance
+@inputs W A S D Ent:entity Ent2:entity M1 M2
+@outputs Temp Thruster
+@persist ANG ANGOLD Delta ANG2 ANGOLD2 Delta2 L1 R1 U1 D1 Height Height1 OldHeight Temp Speed1 Pitch Roll Finished
+@trigger 
+#@model models/hunter/blocks/cube025x025x025.mdl
+
+runOnTick(1)
+if(first() | duped())
+    {
+    Height = entity():pos():z() + 100
+    Finished = 0
+entity():isWeldedTo():setColor(vec(255,255,255))
+    }
+    
+if(tickClk()){    
+ANG = entity():angles():roll() + Pitch
+ANG2 = entity():angles():pitch() + Roll
+Height1 = entity():pos():z()
+if(M1){ Temp = Temp + 1}
+if(M2){ Temp = Temp - 1}
+if(W){
+Pitch = Pitch + 0.2
+}
+
+if(S){
+Pitch = Pitch - 0.2
+}
+
+if(A){
+Roll = Roll + 0.2
+}
+
+if(D){
+Roll = Roll - 0.2
+}
+
+Delta = ANG - ANGOLD
+Delta2 = ANG2 - ANGOLD2
+T1 = -(Delta * 6)
+T1 = T1 + -ANG
+
+T2 = -(Delta2 * 6)
+T2 = T2 + -ANG2
+if(Temp > (Ent:angVel():yaw() + 10))
+{
+Ent:applyTorque(vec(0,0,Temp*100))
+}
+if(entity():pos():z() < Height ){
+Thruster = -(Height1 - OldHeight)*6 + (abs(Height - OldHeight)*1)
+entity():isWeldedTo():applyForce(vec(0,0,50 * -(Height1 - OldHeight)*6 + (abs(Height - OldHeight)*1)))
+}
+else
+{
+#Ent:applyTorque(vec(0,0,(Ent:mass()*entity():isWeldedTo():mass())*2 + (entity():vel():z()*50)))
+#Ent2:applyTorque(vec(0,0,(Ent2:mass()*entity():isWeldedTo():mass())*2 + (entity():vel():z()*50)))
+#Thruster = entity():isWeldedTo():mass()/100
+}
+
+entity():isWeldedTo():applyTorque(vec(T1*entity():isWeldedTo():mass() * 50,0,0))
+entity():isWeldedTo():applyTorque(vec(0,T2*entity():isWeldedTo():mass() * 50,0))
+ANGOLD2 = ANG2
+ANGOLD = ANG
+OldHeight = entity():pos():z()
+if(entity():angVel():yaw() < 3200){
+#entity():isWeldedTo():applyForce(vec(0,0,Thruster*(entity():isWeldedTo():mass()/10)))
+#Thruster = (Thruster*(entity():isWeldedTo():mass()/100))
+}
+#entity():setText(entity():angVel():yaw():toString())
+entity():setText((floor(entity():pos():z()-Height)):toString())
+}

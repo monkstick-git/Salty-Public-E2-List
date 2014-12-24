@@ -1,0 +1,31 @@
+@name BalancePlane
+@inputs P Y R
+@outputs H1 H2 H3 H4
+@persist 
+@trigger 
+runOnTick(1)
+if(tickClk()){
+if(R < -5){
+ H3 = (R * -1) / 2 + 20
+H4 = (R* -1) / 2   + 20
+
+ H1 = (R * 1) / 2 + 20
+H2 = (R* 1) / 2   + 20
+}
+
+if(R > 5){
+ H3 = (R * -1) / 2 + 20
+H4 = (R* -1) / 2   + 20
+
+ H1 = (R * 1) / 2 + 20
+H2 = (R* 1) / 2   + 20
+
+}
+
+if(R > -5 & R<5){
+ H3 = 20
+H4 = 20   
+H1 = 20
+H2 = 20
+}
+}

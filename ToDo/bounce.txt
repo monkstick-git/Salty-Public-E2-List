@@ -1,0 +1,29 @@
+@name bounce
+@inputs EGP:wirelink
+@outputs 
+@persist 
+interval(100)
+
+if(duped()|first()){
+#EGP:egpBox(1,vec2(256,256),vec2(50,20))
+#EGP:egpColor(1,vec(255,0,0)) 
+
+}
+
+for(I=1,20){
+EGP:egpBox(I,vec2(256,(512 - (I * 21))),vec2(50,20)) 
+EGP:egpColor(I,vec(255,0,0))
+
+}
+
+if(owner():vel():length() > 1){
+EGP:egpColor(toUnit("knots", owner():vel():length()/5),vec(0,255,0)),vec(255,0,0)
+}
+else{
+   EGP:egpColor(toUnit("knots", owner():vel():length()/5),vec(0,255,0)),vec(255,0,0) 
+}
+
+
+
+
+

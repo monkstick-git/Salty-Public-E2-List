@@ -1,0 +1,11 @@
+@name rag
+@inputs Rag:entity
+@outputs 
+@persist 
+@trigger 
+interval(1)
+if(first()|duped()){}
+
+Rag:applyForce(entity():pos() - owner():aimPos() - vec(0,0,20))
+#Rag:setPos(Rag:pos() + vec(0,0,20))
+

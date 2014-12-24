@@ -1,0 +1,53 @@
+@name Tracerv3
+@inputs 
+@outputs  
+@persist Direction:angle Ranger:ranger Pitch Yaw Finished A Array:array
+@trigger 
+runOnTick(1)
+if(first() | duped())
+{
+holoCreate(1)    
+holoCreate(2)
+Direction = ang(0,0,0)
+holoEntity(2):setTrails(100,10,10,"trails/laser",vec(255,0,0),255)
+Array = array()
+}
+
+interval(10)
+
+while(perf(100) & Finished != 1)
+{
+    A=A+1
+    Pitch = Pitch + 1
+    if(Pitch >= 360)
+    {
+     Pitch = 0
+     Yaw = Yaw + 1
+    }
+    
+    if(Yaw >= 360)
+    {
+     Yaw = 0
+     Pitch = 0 
+     Finished = 1  
+    }
+    Direction = ang(Pitch,Yaw,0)
+     #Direction = ang(random(360),random(360),random(360))   
+    holoAng(1,Direction)   
+    Ranger = rangerOffset(10000000000,holoEntity(1):pos(),holoEntity(1):forward()) 
+    holoPos(2,Ranger:pos())
+    
+    Array[A,vector] = Ranger:pos()
+    
+}
+
+if(Finished == 1)
+{
+   #entity():setText(Array:count():toString()) 
+}
+
+#Pitch = 0
+#Yaw = 0
+
+entity():setText(A:toString()) 
+

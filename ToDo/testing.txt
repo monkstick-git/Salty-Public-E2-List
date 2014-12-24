@@ -1,0 +1,11 @@
+@name testing
+@inputs 
+@outputs 
+@persist A
+@trigger 
+interval(10)
+
+for(I=1,100){
+ A=A+1   
+}
+

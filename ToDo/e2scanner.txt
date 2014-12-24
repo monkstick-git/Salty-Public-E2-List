@@ -1,0 +1,41 @@
+@name E2Scanner
+@inputs DS:wirelink
+@outputs
+@persist A B C A1 B1 C1
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+DS[1048574] = 0
+DS[1048569] = 2
+DS[1048572] = 512
+DS[1048573] = 512
+A=0
+B=0
+C=1
+ holoCreate(1)
+holoModel(1,"hq_sphere")
+ 
+}
+if(tickClk()){
+while(perf(90)){
+A=A+1
+if(A>=512){B=B+1 A=0} 
+if(B>=512) {B=0 A=0}
+rangerFilter(entity():isWeldedTo())
+RangerData = rangerOffset(50000,entity():isWeldedTo():pos()+vec(-B ,0,A ),-entity():isWeldedTo():up())
+holoPos(1,RangerData:pos())
+G=RangerData:distance()/10
+DS[A+B*512]=rgb2digi(vec(G,G,G),3) 
+
+#[A1=A1+1
+if(A1>=640){B1=B1+1 A1=0} 
+if(B1>=640) {B1=0 A1=0 }
+rangerFilter(entity():isWeldedTo())
+RangerData1 = rangerOffset(50000,entity():isWeldedTo():pos()+vec(-B1/3,0,A1/3),-entity():isWeldedTo():up())
+holoPos(2,RangerData1:pos())
+G1=RangerData1:distance()
+DS[A1+B1*640]=rgb2digi(vec(G1/5,G1/5,G1/5),3) ]#
+entity():setText(ops():toString() + " Ops")
+}
+}
+

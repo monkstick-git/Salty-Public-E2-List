@@ -1,0 +1,21 @@
+@name Targeting
+@inputs 
+@inputs 
+@persist
+@outputs Pos:vector
+@persist Target:entity Targetname:string Pos:vector
+@trigger 
+runOnTick(1)
+runOnChat(1)
+LastSaid=owner():lastSaid():explode(" ")
+if (chatClk(owner())&(LastSaid[1,string]:lower() == "-")) {
+    
+    Targetname = LastSaid[2,string]:lower()
+    Target = findPlayerByName(Targetname)
+    hint("Targeting " + Target:name(), 3)
+    
+}
+if(tickClk())
+{
+    Pos = Target:pos()
+}

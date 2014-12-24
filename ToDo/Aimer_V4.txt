@@ -1,0 +1,25 @@
+@name Aimer V4
+@inputs 
+@outputs Speed Time
+@persist Target:entity Speed X Y Z Z1
+@trigger 
+interval(1000)
+if(first()|duped()){
+holoCreate(1)
+holoScale(1,vec(1,1,1))   
+holoModel(1,"hq_sphere")
+X = entity():pos():x()
+Y = entity():pos():y()
+Z = entity():pos():z()
+holoEntity(1):setTrails(100,0,1,"trails/physbeam",vec(255,0,0),255)
+}
+#Target = holoEntity(1)
+#Time =  (abs((entity():pos():length() - Target:pos():length()))) /Speed
+holoPos(1,vec(X,Y,Z))
+Grav=fromUnit("m/s",toUnit("m/s",gravity()))
+Speed = fromUnit("m/s",25)
+Time = Speed / Grav
+Z = Z + (Speed/Time)
+
+
+

@@ -1,0 +1,25 @@
+@name PianoKeys
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+if(first()|duped()){
+for(I=1,10){
+ holoCreate(I)   
+holoScale(I,vec(10,2,2))
+holoPos(I,entity():pos() + vec(0,I*25,0))
+}
+for(I=1,7){
+ holoCreate(I+10)   
+holoScale(I+10,vec(8,1,2))
+holoColor(I+10,vec(0,0,0))
+}
+holoPos(11,entity():pos() + vec(-12,37.5,2))
+holoPos(12,entity():pos() + vec(-12,37.5+25,2))
+holoPos(13,entity():pos() + vec(-12,37.5+75,2))
+holoPos(14,entity():pos() + vec(-12,37.5+100,2))
+holoPos(15,entity():pos() + vec(-12,37.5+125,2))
+holoPos(16,entity():pos() + vec(-12,37.5+175,2))
+holoPos(17,entity():pos() + vec(-12,37.5+200,2))
+}

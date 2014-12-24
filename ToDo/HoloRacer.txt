@@ -1,0 +1,23 @@
+@name HoloRacer
+@inputs W A S D
+@outputs 
+@persist Ent:entity Flags TopSpeed Speed
+@trigger 
+
+if(first() | duped())
+{
+    holoCreate(1)
+    holoModel(1,"models/props_vehicles/car005a_physics.mdl")
+    holoAng(1,ang(0,90,0))
+    Ent = entity():isWeldedTo()
+    TopSpeed = 100
+    Flags = 0
+}
+
+interval(10)
+for(I=1,10)
+{
+  Ent:setPos(Ent:pos() + (Speed * Ent:forward()))  
+}       
+
+if(W){Speed = clamp(Speed + 1,0,TopSpeed)}

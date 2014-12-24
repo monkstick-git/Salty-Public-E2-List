@@ -1,0 +1,42 @@
+@name EngineACF
+@inputs W Wheel:entity Wheel2:entity F1:entity F2:entity Speedo S Button
+@outputs RPM1 RPM2 RPM3 RPM4 Ind BreakLeft BreakRight
+@persist Pos:vector
+@trigger 
+interval(10)
+if(first()|duped()){
+
+}
+Pos = entity():pos()
+ E = Wheel 
+F = Wheel2
+Speed = Speedo#$Pos:x() + $Pos:y() + $Pos:z()
+RPM1 = abs(F1:angVel():roll()/360*60) + 20 +Button +Speed * 4 
+RPM2 = abs(F2:angVel():roll()/360*60) + 20 + Button+Speed * 4
+RPM3 = abs(Wheel:angVel():roll()/360*60)
+RPM4 = abs(Wheel2:angVel():roll()/360*60)
+
+Force = Wheel:mass()
+if(W == 1){
+    if(RPM1 > RPM3){
+LeftBreak = 1
+Ind = 0
+}
+else{
+LeftBreak = 0
+    Ind = 100
+}
+if(RPM2 > RPM4){
+RightBreak = 1
+Ind = 0   
+}
+else{
+     RightBreak = 0
+    Ind = 100 
+}
+entity():applyForce(vec(0,0,-1 * Speed*1000))
+}
+
+
+
+

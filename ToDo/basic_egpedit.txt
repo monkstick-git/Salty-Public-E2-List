@@ -1,0 +1,176 @@
+@name Basic EGPedit
+@inputs EGP:wirelink Switch
+@outputs 
+@persist B S M RE X Y XY:vector2 X1 Y1 XY1:vector2 Refrash
+interval(200) 
+Axis = 1
+Scale = 64
+V = vec(0,0,0)
+
+if(inputClk()){
+    
+ EGP:egpClear()   
+
+ EGP:egpCircle(1, vec2(256,256), vec2(250,250))
+    EGP:egpColor(1, vec(0,100,0))
+    EGP:egpMaterial(1, "gui/center_gradient")
+
+    EGP:egpCircleOutline(2, vec2(256,256), vec2(225,225)) 
+    EGP:egpColor(2,V)
+
+    EGP:egpCircleOutline(3, vec2(256,256), vec2(200,200)) 
+    EGP:egpColor(3,V)
+
+    EGP:egpCircleOutline(4, vec2(256,256), vec2(175,175)) 
+    EGP:egpColor(4,V)
+
+    EGP:egpCircleOutline(5, vec2(256,256), vec2(150,150)) 
+    EGP:egpColor(5,V)
+
+    EGP:egpCircleOutline(6, vec2(256,256), vec2(125,125)) 
+    EGP:egpColor(6,V)
+
+    EGP:egpCircleOutline(7, vec2(256,256), vec2(100,100)) 
+    EGP:egpColor(7,V)
+
+    EGP:egpCircleOutline(8, vec2(256,256), vec2(75,75)) 
+    EGP:egpColor(8,V)
+
+    EGP:egpCircleOutline(9, vec2(256,256), vec2(50,50)) 
+    EGP:egpColor(9,V)
+
+    EGP:egpCircleOutline(10, vec2(256,256), vec2(25,25)) 
+    EGP:egpColor(10,V)
+
+    EGP:egpCircle(11, vec2(256,256), vec2(5,5)) 
+    EGP:egpColor(11,V)
+
+    EGP:egpLine(12, vec2(0,255), vec2(505,256))
+    EGP:egpColor(12,V)
+
+    EGP:egpLine(13, vec2(256,0), vec2(256,505))
+    EGP:egpColor(13,V)
+    
+    EGP:egpLine(14, vec2(256,256), vec2(256,256))
+    EGP:egpColor(14,V)
+}
+
+if(RE==0){
+    
+EGP:egpClear()
+    EGP:egpCircle(1, vec2(256,256), vec2(250,250))
+    EGP:egpColor(1, vec(0,100,0))
+    EGP:egpMaterial(1, "gui/center_gradient")
+
+    EGP:egpCircleOutline(2, vec2(256,256), vec2(225,225)) 
+    EGP:egpColor(2,V)
+
+    EGP:egpCircleOutline(3, vec2(256,256), vec2(200,200)) 
+    EGP:egpColor(3,V)
+
+    EGP:egpCircleOutline(4, vec2(256,256), vec2(175,175)) 
+    EGP:egpColor(4,V)
+
+    EGP:egpCircleOutline(5, vec2(256,256), vec2(150,150)) 
+    EGP:egpColor(5,V)
+
+    EGP:egpCircleOutline(6, vec2(256,256), vec2(125,125)) 
+    EGP:egpColor(6,V)
+
+    EGP:egpCircleOutline(7, vec2(256,256), vec2(100,100)) 
+    EGP:egpColor(7,V)
+
+    EGP:egpCircleOutline(8, vec2(256,256), vec2(75,75)) 
+    EGP:egpColor(8,V)
+
+    EGP:egpCircleOutline(9, vec2(256,256), vec2(50,50)) 
+    EGP:egpColor(9,V)
+
+    EGP:egpCircleOutline(10, vec2(256,256), vec2(25,25)) 
+    EGP:egpColor(10,V)
+
+    EGP:egpCircle(11, vec2(256,256), vec2(5,5)) 
+    EGP:egpColor(11,V)
+
+    EGP:egpLine(12, vec2(0,255), vec2(505,256))
+    EGP:egpColor(12,V)
+
+    EGP:egpLine(13, vec2(256,0), vec2(256,505))
+    EGP:egpColor(13,V)
+    
+    EGP:egpLine(14, vec2(256,256), vec2(256,256))
+    EGP:egpColor(14,V)
+
+RE = 1}
+if(B){B = 0 
+    Refrash = Refrash + 1
+if(Switch ==1){
+ EGP:egpCircle(99,vec2((entity():pos():x()+15360)/80,(entity():pos():y()+15360)/80),vec2(10,10))
+EGP:egpColor(99,vec(0,0,255))
+    
+for(I=1,numPlayers()){
+    X = findPlayerByName(players():entity(I):name()):pos():x() + 15360
+    Y = findPlayerByName(players():entity(I):name()):pos():y() + 15360
+    XY = vec2(X/80,Y/80)
+    EGP:egpCircle(I+16,XY,vec2(5,5))
+        EGP:egpColor(I+16,vec(255,0,0))}
+
+
+findByClass("gmod_wire_expression2")
+Prop = findToArray()
+
+for(I=1,Prop:count()){
+ Props = Prop[I,entity]
+X1 = Props:pos():x()+ 15360
+Y1  = Props:pos():y()+ 15360
+XY1 = vec2(X1/80,Y1/80) 
+
+EGP:egpCircle(30 +I,XY1,vec2(5,5))
+EGP:egpColor(30+I,vec(100,255,50))
+}   
+}
+else{
+    EGP:egpCircle(99,vec2((entity():pos():x()+15360)/80,(entity():pos():y()+15360)/80),vec2(10,10))
+EGP:egpColor(99,vec(0,0,255))
+    
+for(I=1,numPlayers()){
+    X = findPlayerByName(players():entity(I):name()):pos():x() + 15360
+    Y = findPlayerByName(players():entity(I):name()):pos():y() + 15360
+    XY = vec2(X/80,Y/80)
+    EGP:egpCircle(I+16,XY,vec2(5,5))
+        EGP:egpColor(I+16,vec(255,0,0))}
+
+
+findByClass("prop_physics")
+Prop = findToArray()
+
+for(I=1,Prop:count()){
+ Props = Prop[I,entity]
+X1 = Props:pos():x()+ 15360
+Y1  = Props:pos():y()+ 15360
+XY1 = vec2(X1/80,Y1/80) 
+
+EGP:egpCircle(30 +I,XY1,vec2(5,5))
+}
+}
+}
+else{B+=12
+}
+
+
+
+EGP:egpAngle(14,vec2(256,256),vec2(177,177), -B)
+
+#####################Text##################
+EGP:egpText(15, "_XIII_ & Muneris Industries", vec2(5,470))
+EGP:egpText(16, "Radar V1", vec2(5,490))
+
+
+if(Refrash == 100){
+
+
+
+RE = 0
+Refrash = 0   
+}
+

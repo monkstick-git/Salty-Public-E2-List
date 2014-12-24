@@ -1,0 +1,15 @@
+@name 
+@inputs 
+@outputs X Y
+@persist X Y N L L2
+@trigger 
+
+interval(10)
+N=N+0.01
+L = L + 0.01
+
+Y = clamp(Y+0.05,-1,1)
+X = N
+
+if(N >= 1){N=-1}
+if(Y >= 1){Y=0}

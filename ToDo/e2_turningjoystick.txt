@@ -1,0 +1,17 @@
+@name e2 turningJoystick
+@inputs A D Y
+@outputs 
+@persist 
+@trigger 
+@model models/hunter/plates/plate025x075.mdl
+
+runOnTick(1)
+if(tickClk()){
+TurnAngle = -Y
+
+E = entity()
+Base = E:isConstrainedTo("axis")
+Local = ang(0, TurnAngle - 90, 0) - Base:toLocal(E:angles())        
+DesAF = (Local*300 - E:angVel()*45) * shiftL(ang(E:inertia()))        
+E:applyAngForce( DesAF * ang(0,1,0))
+}

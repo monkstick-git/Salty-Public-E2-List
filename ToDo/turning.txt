@@ -1,0 +1,13 @@
+@name Turning
+@inputs Left Right
+@outputs Hyd Hyd2
+@persist 
+@trigger 
+
+
+if(Left==1){Hyd=0}
+if(Right==1){Hyd=60}
+if(Left==1){Hyd2=60}
+if(Right==1){Hyd2=0}
+if(Left ==0 & Right==0){Hyd=25}
+if(Left ==0 & Right==0){Hyd2=25}

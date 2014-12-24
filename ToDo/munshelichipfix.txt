@@ -1,0 +1,158 @@
+@name MunsHeliChipFIX
+@inputs W A S D Space RESET Faster Slower R
+@outputs C TIME
+@persist E:entity C TIME Rotor Sound2 Z2 SPEED WA AA SA DA
+@trigger 
+
+runOnTick(1)
+
+if(first()|duped()){
+    Z2 = entity():pos():z()
+    Sound = "/vehicles/chopper_rotor2.wav"
+       soundPlay(1,0,Sound)
+ E = entity():isWeldedTo()  
+
+    Pos = E:pos()
+    Ri = E:right()
+    Fw = E:forward()
+    Up = E:up()
+
+    holoCreate(1) # BladeConnector
+    holoCreate(2) # Blade1
+    holoCreate(3) # Blade2
+    holoCreate(8) # Blade3
+    holoCreate(9) # Blade4
+    holoCreate(4) # Speed
+    holoCreate(5) # Tail Connector
+    holoCreate(6) # Tail1
+    holoCreate(7) # Tail2
+    
+    holoModel(1,"cylinder")
+    holoModel(5,"cylinder")
+    holoModel(4,"icosphere3")
+    
+    holoPos(1,Pos + Up * 70) 
+    holoPos(4,Pos + Up * 70) 
+    holoPos(5,Pos + Up * 60 + -Ri*130) 
+    
+    holoScale(2,vec(10,1,0.1))
+    holoScale(3,vec(10,1,0.1))
+    holoScale(8,vec(10,1,0.1))
+    holoScale(9,vec(10,1,0.1))
+    holoScale(6,vec(3.5,1,0.1))
+    holoScale(7,vec(3.5,1,0.1))
+    holoScale(4,vec(20,20,0.2))
+    
+    holoPos(2,Pos + Fw * 60 + Up * 70 - Ri * 0) 
+    holoPos(3,Pos - Fw * 60 + Up * 70 + Ri * 0)
+    holoPos(8,Pos + Fw * 1 + Up * 70 - Ri * 66) 
+    holoPos(9,Pos - Fw * 1 + Up * 70 + Ri * 66)
+    holoPos(6,Pos - Ri * 130 + Up * 80 - Ri * 0) 
+    holoPos(7,Pos - Ri * 130 + Up * 40 + Ri * 0)
+    holoColor(4,vec(100,100,100))
+    
+    holoAng(1,E:angles())
+    holoAng(2,E:toWorld(ang(0,0,10)))
+    holoAng(3,E:toWorld(ang(0,0,-10)))
+    holoAng(8,E:toWorld(ang(0,90,-10)))
+    holoAng(9,E:toWorld(ang(0,270,-10)))
+    holoAng(4,E:angles())
+    holoAng(5,E:angles()+ang(90,0,0))
+    holoAng(6,E:toWorld(ang(90,0,10)))
+    holoAng(7,E:toWorld(ang(90,0,-10)))
+    
+    for(I=1,9){
+    holoColor(I,vec(50,50,50))
+}
+    holoParent(1,entity())
+    holoParent(2,1)
+    holoParent(3,1)
+    holoParent(4,1)
+    holoParent(5,entity())
+    holoParent(6,5)
+    holoParent(7,5)
+    holoParent(8,1)
+    holoParent(9,1)
+}
+
+if(tickClk()){
+    
+if(Faster==1){
+TIME=TIME+0.05
+}
+if(Slower==1){
+TIME=TIME-0.05
+}
+if(TIME<0){
+TIME=0}
+holoAlpha(4,TIME) 
+   if(Space ==1){
+    if(Sound2 < 3000){ 
+Sound2=Sound2+TIME}    
+       
+    E:applyForce(E:up()*(TIME/5) * E:mass())
+}else{ if(Sound2>0){
+Sound2=Sound2-TIME} else{Sound2=0}}
+X = E:angles():pitch()
+Y = E:angles():yaw()
+Z = E:angles():roll()
+Rotor=Rotor+TIME
+
+
+
+    ##Incompatibles super fucking complicated Quaternion angle code##
+    
+    AngStr = 20
+    StabStr = 20
+    PitchRange = 45
+    RollRange = 30
+
+    TAng = ang(0,Y,0) ##Default to stable
+
+    CAng = ang(0,0,0)
+    
+    if (W) { CAng = CAng:setRoll(PitchRange) }
+    if (S) { CAng = CAng:setRoll(-PitchRange) }
+    if (A) { CAng = CAng:setYaw(RollRange):setPitch(RollRange) }
+    if (D) { CAng = CAng:setYaw(-RollRange):setPitch(-RollRange) }
+    
+    TAng = E:toWorld(angnorm(E:toLocal(TAng + CAng)))
+
+    
+    TQuat = quat(TAng)
+    CQuat = quat(E:angles())
+    Quat = TQuat / CQuat
+    
+    E:applyTorque((E:toLocal(rotationVector(Quat) + E:pos()) * AngStr - E:angVelVector() * StabStr) * E:inertia())
+    
+    ##End of super fucking complicated code##
+
+
+
+holoAng(1,E:toWorld(ang(0,Rotor*2,0)))
+holoAng(5,E:toWorld(ang(Rotor*3,90,90)))
+if(RESET==1){
+ reset()   
+}
+
+Z2= entity():pos():z() + (TIME*1)
+if(entity():pos():z() < Z2){
+
+    if(Sound2 < 3000){ 
+Sound2=Sound2+TIME}    
+       
+    E:applyForce(E:up()*TIME/2.4 * E:mass())
+}else{ if(Sound2>0){
+Sound2=Sound2-TIME} else{Sound2=0}}
+
+
+}
+
+
+else{}
+SPEED=toUnit("mph", entity():vel():length())
+  soundPitch(1,TIME*1.4+(Sound2/100)+(SPEED/1))
+
+if(Space==1){E:applyForce(E:up()*(TIME/20) * E:mass())}else{}
+
+

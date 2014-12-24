@@ -1,0 +1,30 @@
+@name Blender2
+@inputs A:entity B:entity
+@outputs 
+@persist AA BB
+@trigger 
+runOnTick(1)
+
+if(tickClk())
+{
+    if(abs(A:angVel():yaw()) < 50)
+    {
+    AA = AA + 10
+    A:applyTorque(vec(0,0,50000 * A:mass()))   
+    }
+    else{
+    A:applyTorque(vec(0,0,-500 * A:mass()))       
+    }
+    
+    if(abs(B:angVel():yaw()) < 50)
+    {
+        BB = BB + 10
+    B:applyTorque(vec(0,0,-50000 * B:mass()))   
+    }
+    else
+    {
+    B:applyTorque(vec(0,0,500 * B:mass()))     
+    }
+    B:setText(B:angVel():yaw():toString())
+       
+}

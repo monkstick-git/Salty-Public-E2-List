@@ -1,0 +1,23 @@
+@name 
+@inputs 
+@outputs 
+@persist 
+@trigger 
+@model models/props_combine/breenglobe.mdl
+interval(100)
+if(first()){
+    AMOUNT=70
+ for(I=1,AMOUNT){
+ holoCreate(I)  
+holoScale(I,vec(4,4,4))
+holoModel(I,"hq_sphere")
+holoEntity(I):setTrails(100,10,10,"trails/physbeam",vec(255,0,0),255)
+
+}   
+
+}
+AMOUNT=70
+for(I=1,AMOUNT){
+ holoPos(I,entity():pos() + vec(sin((I*(360/AMOUNT))+curtime()*100)*(I*20) ,cos((I*(360/AMOUNT))+curtime()*100)*(I*20),(I)*300)*2)   
+}
+#sin(sin(I*300)*cos(curtime()*300)*50)*1000)

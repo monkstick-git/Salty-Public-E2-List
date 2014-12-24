@@ -1,0 +1,37 @@
+@name Warthog AI V2
+@inputs E:entity Eyes:vector Active Ply:entity Reverse
+@outputs L R
+@persist 
+@trigger 
+
+interval(10)
+if(first()|duped())
+{
+holoCreate(1)   
+holoColor(1,vec(255,0,0))
+Offset = 0
+}
+
+
+if(Active)
+{
+holoPos(1,(Eyes * vec(1,1,0) + (E:pos() * vec(0,0,1))))
+}
+Bearing = E:bearing(holoEntity(1):pos()) - Offset
+entity():setText(Bearing:toString())
+
+if(Bearing > 2)
+{
+ R = 1 - Reverse
+ L = 0 + Reverse
+}
+elseif(Bearing < -2)
+{
+ L = 1 - Reverse 
+ R = 0 + Reverse
+}
+else
+{
+ L = 1
+ R = 1
+}

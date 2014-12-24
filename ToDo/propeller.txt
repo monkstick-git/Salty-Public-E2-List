@@ -1,0 +1,61 @@
+@name Propeller
+@inputs 
+@outputs 
+@persist E:entity Speed Entity:entity
+@trigger 
+
+if(first()|duped()){
+runOnTick(1)
+E=entity():isWeldedTo()
+Entity=entity():isWeldedTo()
+
+##########################################################
+Holo=1 ##### Change to 0 to disable the Holo Arrow
+##########################################################
+
+if(Holo==1){
+holoCreate(1)   
+holoModel(1,"hq_cone")
+holoScale(1,vec(0.5,0.5,0.5))
+holoColor(1,vec(0,255,0))
+holoPos(1,(Entity:pos()-Entity:up())+(Entity:up()*25))
+holoParent(1,entity())   
+
+holoCreate(2)   
+holoModel(2,"hq_cylinder")
+holoScale(2,vec(0.1,0.1,0.5))
+holoColor(2,vec(0,255,0))
+holoPos(2,(Entity:pos()-Entity:up())+(Entity:up()*20))
+holoParent(2,entity()) 
+
+holoCreate(3)   
+holoModel(3,"hq_cone")
+holoScale(3,vec(0.5,0.5,0.5))
+holoColor(3,vec(255,255,0))
+holoPos(3,(Entity:pos()-Entity:forward())+(Entity:forward()*25))
+holoAng(3,ang(-90,0,0))
+holoParent(3,entity())   
+
+holoCreate(4)   
+holoModel(4,"hq_cone")
+holoScale(4,vec(0.5,0.5,0.5))
+holoColor(4,vec(255,255,0))
+holoPos(4,(Entity:pos()- -Entity:forward())+( -Entity:forward()*25))
+holoAng(4,ang(-90,0,180))
+holoParent(4,entity()) 
+}
+}
+if(tickClk()){
+ Ang = E:angVel():yaw() ##Might need to change yaw to pitch or roll, depending on what axis you put it on.
+Speed = (E:vel():length()/35)
+Angle = floor(E:angles():yaw())
+Entity:setText(Angle:toString())
+
+E:applyForce(E:up()*((Ang/3)*E:mass())/(2 + 1)*2)
+entity():setText(floor(Ang/360*60):toString() + " " + floor(Speed))   
+if(Angle < 90 & Angle > -90){
+    E:applyTorque(vec(0,(Speed*20)*E:mass(),0))
+}else{}
+E:applyTorque(vec((Ang/20)*E:mass(),0,0))
+
+}

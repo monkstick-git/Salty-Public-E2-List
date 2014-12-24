@@ -1,0 +1,53 @@
+@name 3dRadar
+@inputs Button
+@outputs 
+@persist A Prop:array Props:entity
+@trigger 
+runOnTick(1)
+if(first()|duped()){
+holoCreate(1)
+holoScale(1,vec(100,100,0.1))
+holoColor(1,vec(0,0,0))
+holoAlpha(1,200)
+findByClass("gmod_wire_expression2")
+Prop = findToArray()
+}
+if(tickClk()){
+    while(perf(1)){
+findByClass("gmod_wire_expression2")
+Prop = findToArray()
+#Find all the players on the map
+if(A==0 & Button == 0){
+
+holoCreate(1)
+holoScale(1,vec(100,100,0.1))
+holoColor(1,vec(0,0,0))
+holoAlpha(1,200)
+ for(I=1,numPlayers()){
+holoCreate(I+1)
+holoModel(I+1,"models/Police.mdl")
+holoScale(I+1,vec(1,1,1))
+holoColor(I+1,vec(players():entity(I):ping(),255-players():entity(I):ping(),0))
+}   
+
+for(I=1,Prop:count()){
+holoCreate(I+20)
+holoModel(I+20,"models/expression 2/cpu_microchip.mdl")
+holoScale(I+20,vec(1,1,1)) 
+}
+}
+for(I=1,numPlayers()){
+
+holoPos(I+1,entity():pos() + (players():entity(I):pos()/50)+vec(0,0,10))
+holoAng(I+1,players():entity(I):eyeAngles())
+}
+
+for(I=1,Prop:count()){
+    Props = Prop[I,entity] 
+    holoPos(I+20,entity():pos() + (Props:pos()/50)+vec(0,0,10))
+} 
+A=A+1
+if(A>=100){A=0}
+}
+holoPos(1,entity():pos())
+}

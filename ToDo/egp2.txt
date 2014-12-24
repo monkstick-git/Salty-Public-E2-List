@@ -1,0 +1,34 @@
+@name EGP2
+@inputs EGP:wirelink
+
+interval(20)
+EGP:egpText(1,"Name=", vec2(0,0))
+EGP:egpText(2,entity():owner():name() ,vec2(75,0))
+EGP:egpText(3,"SteamID=", vec2(0,25))
+EGP:egpText(4,entity():owner():steamID(), vec2(80,25))
+EGP:egpText(5,"Location(X,Y,Z)", vec2(0,50))
+EGP:egpText(6,entity():owner():pos():toString(), vec2(120,55))
+EGP:egpSize(6,11)
+EGP:egpText(7,"Is Typing?=", vec2(0,75))
+EGP:egpText(8, entity():owner():isTyping():toString(), vec2(100,75))
+if(entity():owner():isTyping() == 1){EGP:egpText(8,"Yes",vec2(100,75))}
+else{
+    EGP:egpText(8,"No",vec2(100,75))
+}
+EGP:egpText(9,"What Tool?", vec2(0,115))
+EGP:egpText(10, entity():owner():tool(), vec2(90,115))
+if(owner():tool() == ""){EGP:egpText(10,"No Tool Selected", vec2(90,115))}
+EGP:egpText(11,"Kills=", vec2(0,150))
+EGP:egpText(12, entity():owner():frags():toString() ,vec2(50,150))
+EGP:egpText(13, "Deaths=", vec2(0,175))
+EGP:egpText(14, entity():owner():deaths():toString(), vec2(75,175))
+EGP:egpText(15, "Velocity=", vec2(0,200))
+EGP:egpText(16, entity():owner():vel():toString() , vec2(75,200))
+EGP:egpText(17, "No-Clipping?=" , vec2(0,250))
+EGP:egpText(18, entity():owner():inNoclip():toString(), vec2(75,250))
+
+if(entity():owner():inNoclip() == 1){EGP:egpText(18,"Yes",vec2(110,250))}
+
+else{
+    EGP:egpText(18,"No",vec2(110,250))
+}

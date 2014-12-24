@@ -1,0 +1,23 @@
+@name HoloTrail2
+@inputs 
+@outputs Screen
+@persist A
+@trigger 
+interval(1)
+holoCreate(100)
+holoModel(100,"cone")
+holoScale(100,vec(5,5,5))
+holoPos(100,entity():pos() + vec(0,0,-40))
+A = A + 1
+holoCreate(A)
+#holoModel(A,"sphere")
+holoScale(A,vec(5,5,A / 10))
+holoPos(A,entity():pos() + vec(0,0,A * 55))
+holoColor(A,vec(random(255),random(255),random(255)))
+holoAng(A,ang(A * 10,A,A*100))
+holoDelete(A - 20)  
+if(A >= 20){
+ A = 0   
+}
+
+Screen = holoRemainingSpawns()

@@ -1,0 +1,18 @@
+@name Wheel
+@inputs [E]:entity
+@outputs 
+@persist C K
+@trigger 
+runOnTick(64)
+E=entity():isWeldedTo()
+R=E:radius()
+M=E:mass()
+I=M*(R^2)
+if(C<0.85||C>1.15)
+{
+   for(K=1,K>=0,K+1)
+    {
+        C=(K/I)
+        
+    }
+}

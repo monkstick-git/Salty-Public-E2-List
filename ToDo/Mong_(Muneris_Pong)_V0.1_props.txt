@@ -1,0 +1,175 @@
+@name Mong (Muneris Pong) V0.1 props
+@inputs EGP:wirelink RightUp RightDown Reset
+@outputs SoundPlay X Y  RightPad Paddle2Y Paddle2 RightPad2 LeftPad LeftPad2 Paddle1Y Paddle1
+@persist Ball A X A2 Y Xvar Yvar Sprite RightCollide AI LeftCollide Skill
+@trigger 
+
+if(first() | duped())
+{
+   
+    EGP:egpBox(1,vec2(256,256),vec2(10,10))    
+    
+    A = 1
+    A2 = 1
+    X = random(0,512)
+    Y = 270
+    Xvar = 4
+    Yvar = 4
+    
+    Paddle1 = 64
+    Paddle2 = 64
+    
+    EGP:egpBox(22,vec2(3,256),vec2(3,Paddle1))    
+    EGP:egpBox(24,vec2(509,256),vec2(3,Paddle2))  
+    
+    Paddle1Y = 256
+    Paddle2Y = 256
+    AI = 1
+    Skill = 5 #Higher number = Better AI
+}
+
+function makeSound()
+{
+        Rnd = floor(random(100))
+        entity():soundPlay(Rnd,0.2,"player/recharged.wav")
+        soundPitch(Rnd,random(100,140))
+}
+
+function xMove(Direction)
+{
+    X=X+(Xvar * Direction)
+}
+
+function yMove(Direction)
+{
+    Y=Y+(Yvar * Direction)
+}
+
+function movement()
+{
+    if(A == 1)
+    {
+        xMove(1)
+    }
+    else
+    {
+        xMove(-1)
+    }
+    
+    if(A2 == 1)
+    {
+        yMove(1)
+    }
+    else
+    {
+        yMove(-1)
+    }
+   # if(Sprite < 2){
+   # Sprite = Sprite + 1
+ #   }else{
+  #  Sprite = 1
+ #   }
+    EGP:egpPos(1,vec2(X,Y))
+    EGP:egpColor(1,vec(255,(1*22),0))
+}
+
+function angleMath()
+{
+    RightPad = (Paddle2Y + (Paddle2 / 2) ) 
+    RightPad2 = (Paddle2Y - (Paddle2 / 2) ) 
+    
+    LeftPad = (Paddle1Y + (Paddle1 / 2) ) 
+    LeftPad2 = (Paddle1Y - (Paddle1 / 2) ) 
+    
+    if(Y > LeftPad2 & Y < LeftPad)
+    {
+      LeftCollide = 1         
+    }else{
+      LeftCollide = 0   
+    }
+    
+    if(Y > RightPad2 & Y < RightPad)
+    {
+      RightCollide = 1         
+    }else{
+      RightCollide = 0   
+    }
+    
+    if(X >= (512) & RightCollide == 1 & X < (512 + Xvar) )
+    {
+     A = 0   
+    makeSound()
+    }
+    
+    if(X <= 0 & LeftCollide == 1 & X > -5)
+    {
+     A = 1   
+    makeSound()
+    }
+    
+    if(Y >= 512)
+    {
+     A2 = 0   
+    makeSound()
+    }
+    
+    if(Y <= 0)
+    {
+     A2 = 1   
+    makeSound()
+    }
+    
+    if(X > 512 + Xvar)
+    {
+      X = random(0,512)
+      Y = 256
+      Xvar = random(0,10)
+      Yvar = random(0,10)  
+    }
+    
+    if(X < 0 - Xvar)
+    {
+      X = random(0,512)
+      Y = 256
+      Xvar = random(0,10)
+      Yvar = random(0,10)  
+    }
+}
+
+function collisions()
+{
+   
+}
+
+runOnTick(1)
+if(tickClk())
+{
+movement()
+angleMath()
+collisions()
+
+if(RightUp)
+{
+ Paddle2Y = Paddle2Y - 10
+}
+
+if(RightDown)
+{
+ Paddle2Y = Paddle2Y + 10 
+}
+
+if(Paddle1Y < Y)
+{
+ Paddle1Y = Paddle1Y + ((Skill))  
+}else{
+Paddle1Y = Paddle1Y  - ((Skill))  
+}
+
+EGP:egpPos(24,vec2(509,Paddle2Y))
+EGP:egpPos(22,vec2(3,Paddle1Y))
+}
+
+if(Reset)
+{
+ reset()   
+}

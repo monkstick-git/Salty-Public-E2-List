@@ -1,0 +1,31 @@
+@name Ranger3
+@inputs 
+@outputs 
+@persist A Amount
+@trigger 
+
+interval(10)
+
+if(first() | duped())
+{
+    Amount = 32
+ for(I=1,Amount){
+ holoCreate(I)   
+ holoModel(I,"hq_sphere")
+ holoColor(I,vec(I*30,0,0))
+}  
+
+holoCreate(100) 
+holoParent(100,entity())
+}
+
+Rangers = array()
+Last = holoEntity(100):pos()
+for(I=1,Amount)
+{
+
+    R = rangerOffset(1000,holoEntity(100):pos(),Last * -1)
+    holoPos(I,R:position())
+    Last = R:position()
+    if(R:hit()){holoColor(I,vec(255 - R:distance(),R:distance(),0))}
+}

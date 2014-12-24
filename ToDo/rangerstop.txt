@@ -1,0 +1,21 @@
+@name RangerStop2
+@inputs Range W A S D Speed Limit GUP GDOWN Gear
+@outputs Thruster1 Left Right Forward Back BLEFT BRIGHT BFORWARD Gears
+@persist
+@trigger
+if(Range == 0){Left = 0 Right = 0 Forward = 0 Back = 0}
+if(Range != 0 & W == 1){Forward = 1} else{Forward = 0}
+if(Range != 0 & A == 1){Left = 1} else{Left = 0}
+if(Range != 0 & S == 1){Back = 1} else{Back = 0}
+if(Range != 0 & D == 1){Right = 1} else{Right = 0}
+#if(Range != 0 & W == 1 & Gear == 1){BFORWARD = 1} else{BFORWARD = 0}
+#if(Range == 0){Thruster1 = 1}
+#else{
+#    Thruster1 = 0
+#}
+if(Gear > 0){
+if(Range != 0 & A == 1){BLEFT = 1} else{BLEFT = 0}
+if(Range != 0 & D == 1){BRIGHT = 1} else{BRIGHT = 0}
+#if(Range != 0 & W == 1){BFORWARD = 1} else{BFORWARD = 0}
+}
+

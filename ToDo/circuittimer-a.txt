@@ -1,0 +1,44 @@
+@name CircuitTimer-A
+@inputs 
+@outputs TIME STOP STOP1
+@persist Prop:array AM TIME STOP
+@trigger 
+interval(10)
+if(first() | duped()){
+    STOP = 0
+    STOP1 = 0
+ holoCreate(1)   
+holoScale(1,vec(1,1,1))
+holoEntity(1):setTrails(100,0,1,"trails/physbeam",vec(255,0,0),255)
+
+
+}
+
+    holoPos(1,owner():pos())
+#findIncludePlayerProps(owner())
+findByModel("models/jaanus/wiretool/wiretool_input.mdl")
+Prop = findToArray()
+
+
+AM = 100
+AB = findClosest(owner():pos())
+holoPos(1,AB:pos())
+
+
+
+
+if(STOP == 0 | STOP1 == 0){
+
+ for(I = 1,Prop:count()){
+Props = Prop[I,entity]
+if(Props:pos():distance(owner():pos()) > 350){
+   AM = AM + 30
+
+TIME=TIME+0.01
+STOP1 = 1
+}
+else{}
+
+}
+
+}

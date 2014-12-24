@@ -1,0 +1,35 @@
+@name AttackHeli1
+@inputs Rot:entity Space Alt Rot2:entity
+@outputs Speed Screen1
+@persist A
+@trigger 
+interval(100)
+if(first()|duped()){
+#Rot = entity():isWeldedTo()
+
+}
+
+Speed= abs(Rot:angVel():yaw()/360*60)
+ Rot2:applyForce(vec(0,0,Speed*(Rot2:mass())))
+if(Space ==1){
+A = A + 3
+
+}else{}
+if(Alt == 1){
+A = A - 3
+
+}
+else{
+    
+}
+if(Speed < A){
+ Rot:applyTorque(vec(0,0,200000))   
+}
+if(Speed > A){
+    Rot2:applyForce(vec(0,0,-1*Rot2:mass()))
+ Rot:applyTorque(vec(0,0,-100000))   
+}
+else{
+ Rot2:applyForce(vec(0,0,Speed*(Rot2:mass())))
+}
+Screen1 = A

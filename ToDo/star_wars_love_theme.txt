@@ -1,0 +1,47 @@
+@name Star Wars Love Theme
+interval(10)
+ 
+D3  =  33.37
+E3  =  37.456
+C3  =  59.4
+C3s =  62.9
+D3  =  66.7
+D3s =  70.7
+E3  =  74.9
+F3  =  79.3
+F3s =  84
+G3  =  89
+G3s =  94.3
+A4  = 100
+A4s = 105
+B4  = 112.2
+C4  = 118.925
+C4s = 125.993
+D4  = 133.484
+E4  = 149.83
+F4  = 158.740
+G4  = 178.179
+ 
+#Star Wars Love Theme
+Tempo = 865.38
+ 
+if (first()  ) {timer("00",Tempo)}
+ 
+if (clk("00")) {soundPlay(0,Tempo*3  -50,"synth/tri.wav"),soundPitch(0,F4),timer("01",Tempo*3  )}
+if (clk("01")) {soundPlay(0,Tempo    -50,"synth/tri.wav"),soundPitch(0,D4),timer("02",Tempo    )}
+ 
+if (clk("02")) {soundPlay(0,Tempo*0.3-50,"synth/tri.wav"),soundPitch(0,G4),timer("03",Tempo*0.3)}
+if (clk("03")) {soundPlay(0,Tempo*0.3-50,"synth/tri.wav"),soundPitch(0,F4),timer("04",Tempo*0.3)}
+if (clk("04")) {soundPlay(0,Tempo*0.3-50,"synth/tri.wav"),soundPitch(0,E4),timer("05",Tempo*0.3)}
+if (clk("05")) {soundPlay(0,Tempo*3  -50,"synth/tri.wav"),soundPitch(0,F4),timer("06",Tempo*3  )}
+if (clk("06")) {soundPlay(0,Tempo    -50,"synth/tri.wav"),soundPitch(0,D4),timer("07",Tempo    )}
+ 
+if (clk("07")) {soundPlay(0,Tempo*0.3-50,"synth/tri.wav"),soundPitch(0,F4),timer("08",Tempo*0.3)}
+if (clk("08")) {soundPlay(0,Tempo*0.3-50,"synth/tri.wav"),soundPitch(0,E4),timer("09",Tempo*0.3)}
+if (clk("09")) {soundPlay(0,Tempo*0.3-50,"synth/tri.wav"),soundPitch(0,D4),timer("10",Tempo*0.3)}
+if (clk("10")) {soundPlay(0,Tempo*3  -50,"synth/tri.wav"),soundPitch(0,E4),timer("11",Tempo*3  )}
+if (clk("11")) {soundPlay(0,Tempo    -50,"synth/tri.wav"),soundPitch(0,C4),timer("12",Tempo    )}
+ 
+if (clk("12")) {soundPlay(0,Tempo*3  -50,"synth/tri.wav"),soundPitch(0,D4),timer("13",Tempo*3  )}
+if (clk("13")) {soundPlay(0,Tempo    -50,"synth/tri.wav"),soundPitch(0,C4),timer("14",Tempo    )}
+if (clk("14")) {soundPlay(0,Tempo*3  -50,"synth/tri.wav"),soundPitch(0,A4),timer("15",Tempo*3  )}

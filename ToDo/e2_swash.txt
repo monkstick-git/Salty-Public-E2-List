@@ -1,0 +1,18 @@
+@name e2 turning
+@inputs A D A1 D1
+@outputs 
+@persist A2 D2
+@trigger 
+@model models/hunter/plates/plate025x075.mdl
+
+runOnTick(1)
+if(tickClk()){
+TurnAngle = 30
+if(A1 | A){A2=1}else{A2=0}
+if(D1|D){D2=1}else{D2=0}
+E = entity()
+Base = E:isConstrainedTo()
+Local = ang(0,0, TurnAngle*(A2-D2) - 90) - Base:toLocal(E:angles())        
+DesAF = (Local*300 - E:angVel()*45) * shiftL(ang(E:inertia()))        
+E:applyAngForce( DesAF * ang(0,2,0))
+}

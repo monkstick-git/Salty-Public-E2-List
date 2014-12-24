@@ -1,0 +1,28 @@
+@name AntiPersonal
+@inputs 
+@outputs 
+@persist A B C
+@trigger 
+@model models/hunter/blocks/cube075x075x075.mdl
+interval(10)
+if(first() | duped()){
+ A = 100
+B = 1  
+entity():setMass(50000) 
+}
+findByClass("Players")
+findSortByDistance(entity():pos())
+E = find()
+
+#entity():setPos(E:pos() + vec(0,0,100))
+#E:ping()
+
+for(I=1,findByClass("player*")){
+   X= findPlayerByName(players():entity(I):name())
+    if(C > ~C){
+        entity():setPos(X:pos() + vec(0,0,100))
+    }
+    C = players():entity(I):ping()
+}
+
+

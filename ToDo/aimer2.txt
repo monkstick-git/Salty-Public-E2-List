@@ -1,0 +1,26 @@
+@name Aimer2
+@inputs Pod:entity Gun:entity
+@outputs 
+@persist Driver:entity E:entity Ranger:ranger
+@trigger 
+
+interval(1)
+
+if(first() || duped()){
+    E = entity():isWeldedTo()
+    holoCreate(1)
+    holoScale(1, vec(0.5,0.5,0.5))
+    holoColor(1, vec(255,0,0))
+    holoModel(1,"sphere")
+}
+
+Driver = owner()
+
+rangerFilter(Gun)
+Ranger = rangerOffset(10000,Gun:pos(), Gun:forward())
+
+holoPos(1, Ranger:pos())
+
+
+
+#Gun:setAng(Driver:eyeAngles())

@@ -1,0 +1,108 @@
+@name 3d holo sprop assisant
+@inputs
+@outputs Ang:angle Mode Height_Mode Height Dir:vector AngDir
+@persist [P H O E]:entity Idx Cid [Bx]:vector Snap
+
+if( first() )
+{
+    #runOnTick(1)
+    #runOnChat(1)
+    #runOnLast(1)
+    
+    setName("Prop Assistant")
+    
+    E = entity():isWeldedTo() ?: entity()
+    O = owner()
+    
+    function number getID( N )
+    {
+        Idx += N
+        return Idx
+    }
+    function vector entity:getSize()
+    {
+        local Bx = This:boxSize() - 0.5
+        print( _HUD_PRINTCENTER, Bx )
+        return Bx
+    }
+    function vector4 swapMode( [N1 N2]:number )
+    {
+        return select( N1,
+                        vec4(1,0,N2,-1),
+                        vec4(-1,0,N2,1),
+                        vec4(0,1,N2,1),
+                        vec4(0,-1,N2,-1)
+                    ) / 2
+    }
+    function setHologram( V:vector, A:angle )
+    {
+        Rotate = ( Dir[1] ? ang(1,0,0) : ang(0,0,1) ) * -A[1] * AngDir
+        holoPos( 1, P:toWorld( ( Dir * Bx ) ) )
+        holoAng( 1, P:toWorld(Rotate) )
+        holoPos( 1, H:toWorld(vec(1,1,-1)*Dir*Bx) )
+    }
+    
+    Dir = vec(0,-1,1)/2
+    Bx = E:getSize()
+    H = holoCreate( getID(1), E:toWorld( Dir*Bx ), vec( 12, 12, 12 ) / 12, E:toWorld( ang( 0, 0, 0 ) ), vec( 255, 255, 255 ) )
+    holoAlpha( getID(0), 100 )
+    holoModel( getID(0), E:model() )
+    holoParent( getID(0) , E )
+    
+    Snap = 22.5 #22.5
+    
+    P = E
+    
+    Z = 0
+    
+    Mode = 1
+    Mode_Vector = swapMode( Mode, Z )
+    Dir = vec(Mode_Vector)
+    AngDir = Mode_Vector[4]
+    
+    Height = 0
+    Height_Mode = 2
+}
+
+interval( 50 )
+
+Ang = round( E:toLocal(O:eyeAngles()) / Snap ) * Snap
+
+if( changed(Ang) )
+{
+    setHologram( Dir, Ang )
+}
+
+Use = O:keyUse()
+Spawn = O:keyAttack1()
+
+if( Use & changed(Spawn) & Spawn )
+{
+    P = propSpawn( H:model(), H:pos(), H:angles(), 1 )
+    setHologram( Dir, Ang )
+}
+
+Swap = O:keyReload()
+
+if( changed(Swap) & Swap )
+{
+    Mode = Mode%4+1
+    Mode_Vector = swapMode( Mode, Z )
+    Dir = vec(Mode_Vector)
+    AngDir = Mode_Vector[4]
+    setHologram( Dir, Ang )
+}
+
+HSwap = O:keyAttack2()
+if( changed(HSwap) & HSwap )
+{
+    Height_Mode = Height_Mode%3+1
+    Z = select( Height_Mode, -1, 0, 1 )
+    Dir = vec( swapMode( Mode, Z ) )
+    setHologram( Dir, Ang )
+}
+
+if( !P:isValid() )
+{
+    P = E
+}

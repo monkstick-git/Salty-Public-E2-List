@@ -1,0 +1,151 @@
+@name Multishot
+@inputs Button AA
+@outputs A B C D E F G H I J K L M N O P Q R
+@persist A1 
+@trigger 
+interval(1000 - AA)
+
+if(Button == 0){
+A=0
+B=0
+C=0
+D=0
+E=0
+F=0
+G=0
+H=0
+I=0
+J=0
+K=0
+L=0
+M=0
+N=0
+O=0
+P=0
+Q=0
+R=0
+  
+}
+
+if(Button ==1){
+ A1 = A1 + 1   
+
+if(A1==1){
+ A = 1   
+}else{
+A = 0
+}
+if(A1==2){
+ B= 1   
+}else{
+B = 0
+}
+if(A1==3){
+ C = 1   
+}else{
+C = 0
+}
+if(A1==4){
+ D = 1   
+}else{
+D = 0
+}
+if(A1==5){
+ E = 1   
+}else{
+E = 0
+}
+if(A1==6){
+ F = 1   
+}else{
+F= 0
+}
+if(A1==7){
+ G = 1   
+}else{
+G = 0
+}
+if(A1==8){
+ H = 1   
+}else{
+H = 0
+}
+if(A1==9){
+ I = 1   
+}else{
+I = 0
+}
+
+if(A1==10){
+ J = 1   
+}else{
+J = 0
+}
+if(A1==11){
+ K= 1   
+}else{
+K = 0
+}
+if(A1==12){
+ L = 1   
+}else{
+L = 0
+}
+if(A1==13){
+ M = 1   
+}else{
+M = 0
+}
+if(A1==14){
+ N = 1   
+}else{
+N = 0
+}
+if(A1==15){
+ O = 1   
+}else{
+O= 0
+}
+if(A1==16){
+ P = 1   
+}else{
+P = 0
+}
+if(A1==17){
+ Q = 1   
+}else{
+Q = 0
+}
+if(A1==18){
+ R = 1   
+}else{
+R = 0
+}
+
+
+if(Button == 0){
+A=0
+B=0
+C=0
+D=0
+E=0
+F=0
+G=0
+H=0
+I=0
+J=0
+K=0
+L=0
+M=0
+N=0
+O=0
+P=0
+Q=0
+R=0
+  
+}
+if(A1 >=18){
+ A1 = 0   
+}
+
+}

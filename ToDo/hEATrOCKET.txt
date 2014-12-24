@@ -1,0 +1,21 @@
+@name hEATrOCKET
+@inputs E:entity
+@outputs 
+@persist A
+@trigger 
+interval(10)
+if(first()|duped()){
+ A = 0   
+}
+A=A+1
+if(A<400){
+E:applyForce(vec(0,0,10000))
+}else{
+    findByClass("player")
+    findIncludePlayer("Hamster")
+    Find = find()
+    Place = Find:pos()
+    E:applyForce((Place - entity():pos())*10)
+}
+E:applyTorque(vec(0,0,1000))
+

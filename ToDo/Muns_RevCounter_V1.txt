@@ -1,0 +1,45 @@
+@name Muns RevCounter V1
+@inputs EGP:wirelink Rpm
+@outputs 
+@persist Curtime Circle Ang
+@trigger 
+
+if(first() | duped()){
+Ang = 360/20
+EGP:egpClear()
+Circle = 360/20
+for(I=1,15){
+Curtime = Curtime + 2
+EGP:egpBox(I+50,vec2(200,20),vec2(13,5))
+EGP:egpPos(I+50,vec2(cos((I-13-Curtime)*Circle)*120,sin((I-13-Curtime)*Circle)*120)+vec2(384,256)) 
+EGP:egpAngle(I+50,Ang*I + 54)
+}
+Curtime = 0
+
+
+for(I=1,15){
+Curtime = Curtime + 2
+EGP:egpBox(I+70,vec2(200,20),vec2(13,5))
+EGP:egpPos(I+70,vec2(cos((I-13-Curtime)*Circle)*120,sin((I-13-Curtime)*Circle)*120)+vec2(128,256)) 
+EGP:egpAngle(I+70,Ang*I + 54)
+}
+
+
+
+EGP:egpCircle(1,vec2(128,256),vec2(5,5))   
+EGP:egpCircle(2,vec2(384,256),vec2(5,5))   
+
+EGP:egpCircleOutline(3,vec2(128,256),vec2(128,128))   
+EGP:egpCircleOutline(4,vec2(384,256),vec2(128,128))   
+EGP:egpTriangle(5,vec2(-5,0),vec2(5,0),vec2(0,100))
+
+
+#EGP:egpAngle(5,2)
+
+EGP:egpParent(5,1)
+
+}
+while(perf(1))
+{
+    
+}
